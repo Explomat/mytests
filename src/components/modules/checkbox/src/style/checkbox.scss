@@ -1,0 +1,114 @@
+.md-checkbox{
+    box-sizing: border-box;
+    display: inline-block;
+    margin-bottom: 16px;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    min-width: 20px;
+    min-height: 20px;
+    margin-left: 0;
+    margin-right: 16px;
+    
+    &:last-of-type {
+    	margin-left: 0;
+    	margin-right: 0;
+    }
+    
+    .md-container {
+	    top: 12px;
+	    
+	    &:before {
+	    	box-sizing: border-box;
+		    background-color: transparent;
+		    border-radius: 50%;
+		    content: "";
+		    position: absolute;
+		    display: block;
+		    height: auto;
+		    left: 0;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    -webkit-transition: all .5s;
+		    transition: all .5s;
+		    width: auto;
+	    }
+	    
+	    &:after {
+		    box-sizing: border-box;
+		    content: "";
+		    position: absolute;
+		    top: -10px;
+		    right: -10px;
+		    bottom: -10px;
+		    left: -10px;
+		}
+		
+		.md-icon {
+		    box-sizing: border-box;
+		    -webkit-transition: .24s;
+		    transition: .24s;
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    width: 20px;
+		    height: 20px;
+		    border-width: 2px;
+		    border-style: solid;
+		    border-radius: 2px;
+		    color: #444;
+		    
+		    &.md-icon--checked {
+		    	background-color: #4CAF50;
+                border: none;
+                
+                &:after {
+                	box-sizing: border-box;
+				    -webkit-transform: rotate(45deg);
+				    transform: rotate(45deg);
+				    position: absolute;
+				    left: 7.47px;
+    				top: 2.10px;
+				    display: table;
+				    width: 6.66667px;
+				    height: 13.33333px;
+				    border-width: 2px;
+				    border-style: solid;
+				    border-top: 0;
+				    border-left: 0;
+				    content: "";
+				    color: #fff;
+                }
+		    }
+		}
+	}
+	
+	.md-label {
+	    box-sizing: border-box;
+	    position: relative;
+	    display: inline-block;
+	    vertical-align: middle;
+	    white-space: normal;
+	    -webkit-user-select: text;
+	    -moz-user-select: text;
+	    -ms-user-select: text;
+	    user-select: text;
+	    margin-left: 30px;
+	    margin-right: 0;
+	    word-break: break-all;
+	}
+}
+
+
+
+
+
+
+
+

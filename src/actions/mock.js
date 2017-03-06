@@ -42,23 +42,23 @@ function getRandomState(states){
 
 function filterTests(tests, search, page, order){
 	const filteredTests = filter(tests,  t => {
-		return (~t.title.indexOf(search));
+		return (~t.title.value.indexOf(search));
 	});
 	const [key, orderBy] = order.split(':');
 	const sortedTests = filteredTests.sort((f, s) => {
 		if (orderBy === 'asc'){
-			if (f[key] < s[key]){
+			if (f[key].value < s[key].value){
 				return -1;
 			}
-			if (f[key] > s[key]){
+			if (f[key].value > s[key].value){
 				return 1;
 			}
 			return 0;
 		} else if (orderBy === 'desc') {
-			if (f[key] < s[key]){
+			if (f[key].value < s[key].value){
 				return 1;
 			}
-			if (f[key] > s[key]){
+			if (f[key].value > s[key].value){
 				return -1;
 			}
 			return 0;
@@ -81,7 +81,11 @@ function mockTests(){
 	for (let i = 0; i < MAX_TESTS_COUNT; i++) {
 		const test = {
 			id: i,
-			title: `Test № ${i + 1}`
+			title: {
+				type: 'string',
+				value: `Test № ${i + 1}`,
+				title: 'Название теста'
+			}
 		};
 		tests.push(test);
 		
@@ -90,9 +94,17 @@ function mockTests(){
 		for (let j = 0; j < MAX_SECTIONS_COUNT; j++){
 			const section = {
 				id: j,
-				title: `Section № ${j + 1}`,
-				order: getRandomState(sectionOrders),
-				sectionOrders
+				title: {
+					type: 'string',
+					value: `Section № ${j + 1}`,
+					title: 'Название раздела'
+				},
+				order: {
+					type: 'select',
+					selected: getRandomState(sectionOrders),
+					title: 'Порядок следования вопросов',
+					values: sectionOrders
+				}
 			};
 			sections.push(section);
 			test.sections = sections;
@@ -102,12 +114,22 @@ function mockTests(){
 			for (let k = 0; k < MAX_QUESTIONS_COUNT; k++){
 				const question = {
 					id: k,
-					title: `Question № ${k + 1}`,
-					weight: getRandomArbitrary(1, 10),
-					type: getRandomState(questionTypes),
-					questionTypes,
-					conditionGradingOptions,
-					conditionSentenceOption
+					title: {
+						type: 'string',
+						value: `Question № ${k + 1}`,
+						title: 'Название вопроса'
+					},
+					weight: {
+						type: 'integer',
+						value: getRandomArbitrary(1, 10),
+						title: 'Вес вопроса'
+					},
+					type: {
+						type: 'select',
+						selected: getRandomState(questionTypes),
+						title: 'Тип',
+						values: questionTypes
+					}
 				};
 				questions.push(question);
 				section.questions = questions;
@@ -117,11 +139,32 @@ function mockTests(){
 				for (let p = 0; p < MAX_ANSWERS_COUNT; p++){
 					const answer = {
 						id: p,
-						text: `Answer № ${p + 1}`,
-						weight: 0,
+						text: {
+							type: 'string',
+							value: `Answer № ${p + 1}`,
+							title: 'Ответ'
+						},
+						is_correct_answer: {
+							type: 'bool',
+							value: getRandomArbitrary(0, 2),
+							title: 'Правильный ответ'
+						},
+						weight: {
+							type: 'real',
+							value: 0,
+							title: 'Вес'
+						},
 						condition: {
-							grading_option_id: getRandomState(conditionGradingOptions),
-							sentence_option_id: getRandomState(conditionSentenceOption)
+							grading_option_id: {
+								type: 'select',
+								selected: getRandomState(conditionGradingOptions),
+								values: conditionGradingOptions
+							},
+							sentence_option_id: {
+								type: 'select',
+								selected: getRandomState(conditionSentenceOption),
+								values: conditionSentenceOption
+							}
 						}
 					};
 					answers.push(answer);
@@ -140,7 +183,7 @@ export function mockGetTests(search, page, order){
 	const _tests = data.tests.map(t => {
 		return {
 			id: t.id,
-			title: t.title
+			title: t.title.value
 		};
 	});
 	return {

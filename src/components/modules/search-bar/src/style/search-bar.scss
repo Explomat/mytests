@@ -1,5 +1,5 @@
 .search-box {
-	display: inline-block;
+	display: block;
     position: relative;
     vertical-align: middle;
 
@@ -12,6 +12,7 @@
         border-radius: 1px;
         outline: none;
         font-size: inherit;
+        width: calc(100% - 47px);
     }
     .search-box__search-icon {
         position: absolute;

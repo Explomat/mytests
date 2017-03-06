@@ -4,11 +4,14 @@ import Answer from './Answer';
 class Question extends Component {
 	
 	render(){
-		const { title, weight, type, answers } = this.props;
+		const title = this.props.title || {};
+		const { answers } = this.props;
 		return (
 			<div className='question'>
-				<div>Question - {title} / {weight} / {type}</div>
-				{answers && answers.map(a => <Answer key={a.id} {...a} />)}
+				<div className='question__title'>Question - {title.value}</div>
+				<div className='answers'>
+					{answers && answers.map(a => <Answer key={a.id} {...a} />)}
+				</div>
 			</div>
 		);
 	}

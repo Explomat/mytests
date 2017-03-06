@@ -42,10 +42,16 @@ class InputCalendar extends Component {
 		const { isShow } = this.state;
 		const { className, placeholder, date, prevMonthIcon, nextMonthIcon } = this.props;
 		const { displayDate, displayTime } = this.props;
-		const dateTimeValue = displayDate && displayTime ? moment(date).format('llll')
-								: displayDate ? moment(date).format('MMMM Do YYYY')
-								: displayTime ? moment(date).format('hh:mm')
-								: moment(new Date()).format('llll');
+		
+		const displayDateAndTime = displayDate && displayTime;
+		const dateTimeValue = displayDateAndTime ?
+			moment(date).format('LLL') : displayDate ?
+			moment(date).format('LL') : moment(date).format('hh:mm');
+		const iconClasses = cx({
+			'icon-clock-o': displayTime,
+			'icon-calendar': displayDate,
+			'input-calendar__icon': true
+		});
 		return (
 			<div className={cx('input-calendar', className)}>
 				<TextView
@@ -55,7 +61,7 @@ class InputCalendar extends Component {
 					placeholder={placeholder}
 					readOnly
 				/>
-				<i className='icon-calendar input-calendar__icon' onClick={this.handleToogle} />
+				<i className={iconClasses} onClick={this.handleToogle} />
 				<div className={cx({ 'input-calendar__calendar': true, 'input-calendar__calendar--show': isShow })}>
 					<InputMoment
 						moment={moment(date)}

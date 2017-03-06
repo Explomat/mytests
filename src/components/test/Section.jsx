@@ -4,13 +4,14 @@ import Question from './Question';
 class Section extends Component {
 	
 	render(){
-		const { title, questions } = this.props;
+		const title = this.props.title || {};
+		const { questions } = this.props;
 		return (
 			<div className='section'>
-				<div>Section - {title}</div>
-				{questions && questions.map(q => <Question key={q.id} {...q} />)}
-				<br />
-				<br />
+				<div className='section__title'>{title.value}</div>
+				<div className='questions'>
+					{questions && questions.map(q => <Question key={q.id} {...q} />)}
+				</div>
 			</div>
 		);
 	}

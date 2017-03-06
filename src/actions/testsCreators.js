@@ -1,7 +1,7 @@
-import { get } from '../utils/ajax';
-import { url } from '../config';
+/* import { get } from '../utils/ajax';
+import { url } from '../config';*/
 import constants from '../constants';
-import error from './error';
+// import error from './error';
 import { mockGetTests, getMockTest } from './mock';
 
 export function getTest(testId){
@@ -84,7 +84,17 @@ export function getTestsOnScroll(search, page, order){
 	return dispatch => {
 		dispatch({ type: constants.TESTS_GET_TESTS_ON_SCROLL });
 		
-		const path = url.createPath({
+		setTimeout(() => {
+			const data = mockGetTests(search, page, order);
+			dispatch({
+				type: constants.TESTS_GET_TESTS_ON_SCROLL_SUCCESS,
+				page,
+				order,
+				...data
+			});
+		}, 300);
+		
+		/* const path = url.createPath({
 			server_name: 'mytests',
 			action_name: 'Tests',
 			search,
@@ -107,6 +117,6 @@ export function getTestsOnScroll(search, page, order){
 		})
 		.catch(e => {
 			dispatch(error(e.message));
-		});
+		});*/
 	};
 }

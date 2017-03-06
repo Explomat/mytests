@@ -13,13 +13,16 @@ class InputMoment extends Component {
 		this.handleChangeDateTime = this.handleChangeDateTime.bind(this);
 		this.handleClickTab = this.handleClickTab.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+		this._renderTabs = this._renderTabs.bind(this);
 		
+		const { displayDate, displayTime } = props;
+		this.displayDateAndTime = displayDate && displayTime;
 		this.state = {
-			tab: 0,
-			moment: this.props.moment
+			tab: this.displayDateAndTime ? 0 : displayDate ? 0 : 1,
+			moment: props.moment
 		};
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		this.setState({ moment: nextProps.moment });
 	}
@@ -39,33 +42,40 @@ class InputMoment extends Component {
 		if (this.props.onSave) this.props.onSave(m);
 	}
 	
+	_renderTabs(){
+		const { tab } = this.state;
+		
+		if (this.displayDateAndTime) {
+			return (
+				<div className='options'>
+					<button
+						type='button'
+						className={cx('icon-calendar im-btn', { 'is-active': tab === 0 })}
+						onClick={this.handleClickTab.bind(null, 0)}
+					>
+						Дата
+					</button>
+					<button
+						type='button'
+						className={cx('icon-clock-o im-btn', { 'is-active': tab === 1 })}
+						onClick={this.handleClickTab.bind(null, 1)}
+					>
+						Время
+					</button>
+				</div>
+			);
+		}
+		return null;
+	}
+	
 	render() {
 		const { tab, moment } = this.state;
 		const { displayDate, displayTime } = this.props;
 		
 		return (
 			<div className='m-input-moment'>
-				<div className='options'>
-					{displayDate &&
-						<button
-							type='button'
-							className={cx('icon-calendar im-btn', { 'is-active': tab === 0 })}
-							onClick={this.handleClickTab.bind(null, 0)}
-						>
-							Дата
-						</button>
-					}
-					{displayTime &&
-						<button
-							type='button'
-							className={cx('icon-clock-o im-btn', { 'is-active': tab === 1 })}
-							onClick={this.handleClickTab.bind(null, 1)}
-						>
-							Время
-						</button>
-					}
-				</div>
-
+				{this._renderTabs()}
+				
 				<div className='tabs'>
 					{displayDate &&
 						<Calendar

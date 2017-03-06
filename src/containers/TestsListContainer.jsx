@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TestsList from '../components/TestsList';
 import SearchBarCount from '../components/modules/search-bar-count';
 import { DropDownIcon, DropDownIconItem } from '../components/modules/dropdown-icon';
-import CastComponent from '../components/modules/cast-component';
 import * as actionCreators from '../actions';
 import { connect } from 'react-redux';
 import cx from 'classnames';
@@ -59,7 +58,7 @@ class TestsListContainer extends Component {
 		
 		const { isFetchingScroll, search, page, pages_count, order } = this.props;
 		if (scrollHeight - (clientHeight + offset) < 100 && !isFetchingScroll && (page + 1) <= pages_count) {
-			this.props.getVacanciesOnScroll(search, page + 1, order);
+			this.props.getTestsOnScroll(search, page + 1, order);
 		}
 	}
 	
@@ -85,56 +84,6 @@ class TestsListContainer extends Component {
 					<i className='icon-up-open-2' />
 				</span>
 				<div className='tests-container__header'>
-				
-					<div style={{ height: '1000px' }}>
-						<div className='col-sm-5 col-md-4 col-lg-3'>
-							<CastComponent
-								onChange={val => console.log(val)}
-								type='bool'
-								label='Bool'
-								checked
-							/>
-							<CastComponent
-								onChange={val => console.log(val)}
-								type='string'
-								placeholder='String'
-							/>
-							<CastComponent
-								onChange={val => console.log(val)}
-								type='integer'
-								title='Integer'
-								className='form-control'
-							/>
-							<CastComponent
-								onChange={val => console.log(val)}
-								type='real'
-								title='Real'
-								className='form-control'
-							/>
-							<CastComponent
-								onChange={val => console.log(val)}
-								type='select'
-								selectedPayload='test'
-							/>
-							<CastComponent
-								onSave={val => console.log(val)}
-								type='date'
-								title='Date'
-							/>
-							<CastComponent
-								onSave={val => console.log(val)}
-								type='time'
-								title='Time'
-							/>
-							<CastComponent
-								onSave={val => console.log(val)}
-								type='datetime'
-								title='Datetime'
-							/>
-						</div>
-					</div>
-					
-					
 					<div className='tests-container__filters'>
 						<div className='tests-container__search-bar-container'>
 							<SearchBarCount

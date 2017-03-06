@@ -81,10 +81,85 @@ function mockTests(){
 	for (let i = 0; i < MAX_TESTS_COUNT; i++) {
 		const test = {
 			id: i,
+			code: {
+				type: 'string',
+				value: `code № ${i + 1}`,
+				title: 'Код'
+			},
 			title: {
 				type: 'string',
 				value: `Test № ${i + 1}`,
-				title: 'Название теста'
+				title: 'Название раздела'
+			},
+			passing_score: {
+				type: 'integer',
+				value: getRandomArbitrary(0, 20),
+				title: 'Проходной балл'
+			},
+			duration: {
+				type: 'integer',
+				value: getRandomArbitrary(0, 120),
+				title: 'Длительность (мин.)'
+			},
+			duration_days: {
+				type: 'integer',
+				value: getRandomArbitrary(0, 5),
+				title: 'Продолжительность (дней)'
+			},
+			attempts_num: {
+				type: 'integer',
+				value: getRandomArbitrary(0, 5),
+				title: 'Количество попыток'
+			},
+			is_open: {
+				type: 'bool',
+				value: false,
+				title: 'Открытый тест (возможно самостоятельно назначить тест)'
+			},
+			not_sent_correct_answer: {
+				type: 'bool',
+				value: false,
+				title: 'Не передавать проигрывателю информацию о правильных ответах на вопросы'
+			},
+			display_result: {
+				type: 'bool',
+				value: false,
+				title: 'Показывать результаты теста (резюме по тесту)'
+			},
+			display_correct_answer: {
+				type: 'bool',
+				value: false,
+				title: 'Показывать правильный ответ'
+			},
+			not_disp_last_attempt: {
+				type: 'bool',
+				value: false,
+				title: 'Не показывать сообщение об исчерпании попыток ответа'
+			},
+			not_display_feedback: {
+				type: 'bool',
+				value: false,
+				title: 'Не показывать в данном тесте сообщения обратной связи'
+			},
+			display_result_report: {
+				type: 'bool',
+				value: false,
+				title: 'Показывать отчет о результатах теста'
+			},
+			display_answers_in_report: {
+				type: 'bool',
+				value: true,
+				title: 'Показывать варианты ответов в отчете по тестированию'
+			},
+			display_correct_answer_in_report: {
+				type: 'bool',
+				value: true,
+				title: 'Показывать правильный ответ в отчете по тестированию'
+			},
+			not_display_unfinished_score: {
+				type: 'bool',
+				value: false,
+				title: 'Не показывать набранный балл для завершенных тестов'
 			}
 		};
 		tests.push(test);

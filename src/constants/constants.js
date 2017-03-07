@@ -11,7 +11,8 @@ const remoteConstants = createRemoteActions([
 
 const constants = keyMirror({
 	'APP_CHANGE_TITLE': null,
-	'APP_ERROR_MESSAGE': null
+	'APP_ERROR_MESSAGE': null,
+	'TESTS_TOGGLE_OPEN_SECTION': null
 });
 
 export default merge(remoteConstants, constants);

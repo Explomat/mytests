@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TextView } from '../modules/text-label';
 import InputNumber from '../modules/input-number';
 import Checkbox from '../modules/checkbox';
-import Section from './Section';
+import SectionContainer from '../../containers/SectionContainer';
 
 class Test extends Component {
 	render(){
@@ -24,7 +24,7 @@ class Test extends Component {
 		const display_correct_answer_in_report = this.props.display_correct_answer_in_report || {};
 		const not_display_unfinished_score = this.props.not_display_unfinished_score || {};
 		
-		const { sections } = this.props;
+		const { id, sections } = this.props;
 		return (
 			<div className='test col-sm-5 col-md-4 col-lg-3'>
 				<div className='test_all-settings'>
@@ -56,7 +56,13 @@ class Test extends Component {
 				</div>
 				<div className='test__sections'>
 					<div className='sections'>
-						{sections && sections.map(s => <Section key={s.id} {...s} />)}
+						{sections && sections.map(s =>
+							<SectionContainer
+								key={s.id}
+								testId={id}
+								{...s}
+							/>)
+						}
 					</div>
 				</div>
 			</div>

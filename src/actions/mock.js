@@ -5,6 +5,12 @@ import findIndex from 'lodash/findIndex';
 
 const limitRows = 15;
 
+const testStatuses = [
+	{ payload: 'publish', text: 'Открытый' },
+	{ payload: 'project', text: 'Проект' },
+	{ payload: 'secret', text: 'Скрытый' }
+];
+
 const sectionOrders = [
 	{ payload: 'Sequential', text: 'Последовательно' },
 	{ payload: 'Random', text: 'Случайно' }
@@ -110,6 +116,12 @@ function mockTests(){
 				type: 'integer',
 				value: getRandomArbitrary(0, 5),
 				title: 'Количество попыток'
+			},
+			status: {
+				type: 'select',
+				selected: getRandomState(testStatuses),
+				title: 'Статус',
+				values: testStatuses
 			},
 			is_open: {
 				type: 'bool',

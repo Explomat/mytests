@@ -120,3 +120,11 @@ export function getTestsOnScroll(search, page, order){
 		});*/
 	};
 }
+
+export function toggleOpenSection(testId, sectionId){
+	return {
+		type: constants.TESTS_TOGGLE_OPEN_SECTION,
+		testId,
+		sectionId
+	};
+}

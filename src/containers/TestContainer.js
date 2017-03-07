@@ -10,6 +10,10 @@ class TestContainer extends Component {
 		this.props.getTest(params.testId);
 	}
 	
+	componentShouldUpdate(){
+		return true;
+	}
+	
 	render(){
 		const { isFetching } = this.props;
 		return (

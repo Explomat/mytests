@@ -6,29 +6,42 @@
 	.sections {
 		.section-container {
 			.section {
-				position: relative;
-				
-				.section__title {
+				.section__description{
+					position: relative;
+					cursor: pointer;
+					margin-bottom: 16px;
 					
-				}
-				
-				.section__caret {
-					position: absolute;
-				    top: 50%;
-				    right: 8px;
-				    transform: translateY(-50%);
-				}
-				
-				.questions {
-					.question {
-						.question__title {
-							
-						}
+					.section__title {
 						
-						.answers {
-							.answer {
-								.answer__title {
-									
+					}
+					.section__question-count{
+						
+					}
+					.section__caret {
+						position: absolute;
+					    top: 50%;
+					    right: 8px;
+					    transform: translateY(-50%);
+					}
+				}
+				
+				.section__additional{
+					
+					.section__menu{
+						
+					}
+					
+					.questions {
+						.question {
+							.question__title {
+								
+							}
+							
+							.answers {
+								.answer {
+									.answer__title {
+										
+									}
 								}
 							}
 						}

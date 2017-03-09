@@ -18,6 +18,11 @@ class Section extends Component {
 		this.props.toggleOpenSection(testId, id);
 	}
 	
+	handleChangeField(key, value){
+		const { id, changeTestFieldInSection } = this.props;
+		changeTestFieldInSection(id, key, value);
+	}
+	
 	render(){
 		const { testId, id, title, order, questions, openedTestSections } = this.props;
 		const isOpen = openedTestSections.indexOf(id) !== -1;
@@ -42,11 +47,16 @@ class Section extends Component {
 					</div>
 					{isOpen && <div className='section__additional'>
 						<div className='section__menu'>
-							<TextView value={title.value} placeholder={title.title}/>
+							<TextView
+								value={title.value}
+								placeholder={title.title}
+								onBlur={val => this.handleChangeField('title', val)}
+							/>
 							<DropDown
 								items={order.values}
 								selectedPayload={order.selected}
 								title={order.title}
+								onChange={(e, val) => this.handleChangeField('order', val)}
 							/>
 						</div>
 						<div className='questions'>

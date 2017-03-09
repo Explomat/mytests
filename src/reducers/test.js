@@ -82,6 +82,19 @@ export default function test(state = {
 				})
 			};
 		}
+		
+		case constants.TESTS_CHANGE_FIELD_IN_SECTION: {
+			const { sections } = state;
+			
+			return {
+				...state,
+				sections: sections.map(s => {
+					return s.id === action.sectionId ?
+						changeTestField(s, action.key, action.value) :
+						s;
+				})
+			};
+		}
 
 		default:
 			return state;

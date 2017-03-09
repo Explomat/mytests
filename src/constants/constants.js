@@ -17,7 +17,8 @@ const constants = keyMirror({
 	'APP_CHANGE_TEST_TAB': null,
 	'APP_CHANGE_OPENED_TEST_SECTIONS': null,
 	'TESTS_TOGGLE_OPEN_SECTION': null,
-	'TESTS_CHANGE_TEST_FIELD': null
+	'TESTS_CHANGE_TEST_FIELD': null,
+	'TESTS_CHANGE_FIELD_IN_SECTION': null
 });
 
 export default merge(remoteConstants, constants);

@@ -5,10 +5,18 @@ import constants from '../constants';
 import { mockGetTests, getMockTest, getMockQuestion } from './mock';
 
 export function getTest(testId){
-	return dispatch => {
+	return (dispatch) => {
 		dispatch({ type: constants.APP_CHANGE_TITLE, title: 'Тест' });
 		dispatch({ type: constants.TESTS_GET_TEST });
 		
+		/* const state = getState();
+		if (state.test && state.test.id !== null && state.test.id.toString() === testId.toString()){
+			dispatch({
+				type: constants.TESTS_GET_TEST_SUCCESS,
+				response: state.test
+			});
+			return;
+		}*/
 		setTimeout(() => {
 			const data = getMockTest(testId);
 			dispatch({
@@ -154,6 +162,15 @@ export function toggleOpenSection(testId, sectionId){
 export function changeTestField(key, value){
 	return {
 		type: constants.TESTS_CHANGE_TEST_FIELD,
+		key,
+		value
+	};
+}
+
+export function changeTestFieldInSection(sectionId, key, value){
+	return {
+		type: constants.TESTS_CHANGE_FIELD_IN_SECTION,
+		sectionId,
 		key,
 		value
 	};

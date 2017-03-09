@@ -10,9 +10,10 @@
 				.section__description{
 					position: relative;
 					cursor: pointer;
+					padding-right: 24px;
 					
 					.section__title {
-						
+						word-break: break-word;
 					}
 					.section__question-count{
 						

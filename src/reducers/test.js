@@ -1,7 +1,7 @@
 import constants from '../constants';
 import assign from 'lodash/assign';
 // import filter from 'lodash/filter';
-import findIndex from 'lodash/findIndex';
+// import findIndex from 'lodash/findIndex';
 
 function isFetchingTest(state = false, action){
 	const { type } = action;
@@ -12,7 +12,7 @@ function isFetchingTest(state = false, action){
 	return false;
 }
 
-function section(state = {
+/* function section(state = {
 	id: null,
 	title: {},
 	order: {},
@@ -24,6 +24,19 @@ function section(state = {
 		default:
 			return state;
 	}
+}*/
+
+function changeTestField(state, key, value){
+	if (!(key in state)) return state;
+	
+	const field = state[key];
+	if (!field.type) return state;
+	
+	if (field.type === 'select'){
+		const newState = { ...state, [key]: { ...field, selected: value } };
+		return newState;
+	}
+	return { ...state, [key]: { ...field, value } };
 }
 
 export default function test(state = {
@@ -52,20 +65,22 @@ export default function test(state = {
 		case constants.TESTS_GET_TEST:
 		case constants.TESTS_GET_TEST_SUCCESS:
 			return assign({}, state, action.response, { isFetching: isFetchingTest(state.isFetching, action) });
+			
+		case constants.TESTS_CHANGE_TEST_FIELD: {
+			return changeTestField(state, action.key, action.value);
+		}
 		
 		case constants.TESTS_TOGGLE_OPEN_SECTION: {
 			const { sections } = state;
-			const sectionIndex = findIndex(sections, s => s.id.toString() === action.sectionId.toString());
-			if (sectionIndex !== -1){
-				sections[sectionIndex] = section(sections[sectionIndex], action);
-			}
-			const a = assign({}, state);
-			console.log(a === state);
-			const b = assign({}, state, sections);
-			console.log(b === state);
-			return a;
-			// const _section = filter(state.sections, s => s.id.toString() === action.sectionId.toString())[0];
-			// return assign({}, state, section(_section, action));
+			
+			return {
+				...state,
+				sections: sections.map(s => {
+					return s.id === action.sectionId ?
+						{ ...s, isOpen: !s.isOpen } :
+						s;
+				})
+			};
 		}
 
 		default:

@@ -10,10 +10,6 @@ class TestContainer extends Component {
 		this.props.getTest(params.testId);
 	}
 	
-	componentShouldUpdate(){
-		return true;
-	}
-	
 	render(){
 		const { isFetching } = this.props;
 		return (
@@ -25,7 +21,8 @@ class TestContainer extends Component {
 }
 
 function mapStateToProps(state) {
-	return { ...state.test };
+	const { selectedTestTab } = state.app;
+	return { ...state.test, selectedTestTab };
 }
 
 export default connect(mapStateToProps, actionCreators)(TestContainer);

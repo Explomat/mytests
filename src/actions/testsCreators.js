@@ -2,7 +2,7 @@
 import { url } from '../config';*/
 import constants from '../constants';
 // import error from './error';
-import { mockGetTests, getMockTest } from './mock';
+import { mockGetTests, getMockTest, getMockQuestion } from './mock';
 
 export function getTest(testId){
 	return dispatch => {
@@ -121,10 +121,47 @@ export function getTestsOnScroll(search, page, order){
 	};
 }
 
+export function getQuestion(testId, sectionId, questionId){
+	return dispatch => {
+		dispatch({ type: constants.TESTS_GET_TEST_QUESTION });
+		
+		setTimeout(() => {
+			const data = getMockQuestion(testId, sectionId, questionId);
+			dispatch({
+				type: constants.TESTS_GET_TEST_QUESTION_SUCCESS,
+				response: data
+			});
+		});
+	};
+}
+
 export function toggleOpenSection(testId, sectionId){
+	return (dispatch, getState) => {
+		dispatch({
+			type: constants.TESTS_TOGGLE_OPEN_SECTION,
+			testId,
+			sectionId
+		});
+		
+		const state = getState();
+		dispatch({
+			type: constants.APP_CHANGE_OPENED_TEST_SECTIONS,
+			sections: state.test.sections
+		});
+	};
+}
+
+export function changeTestField(key, value){
 	return {
-		type: constants.TESTS_TOGGLE_OPEN_SECTION,
-		testId,
-		sectionId
+		type: constants.TESTS_CHANGE_TEST_FIELD,
+		key,
+		value
+	};
+}
+
+export function changeTestTab(tab){
+	return {
+		type: constants.APP_CHANGE_TEST_TAB,
+		tab
 	};
 }

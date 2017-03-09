@@ -284,6 +284,22 @@ export function getMockTest(testId){
 	return tests.filter(t => t.id.toString() === testId.toString())[0];
 }
 
+export function getMockQuestion(testId, sectionId, questionId){
+	const test = tests.filter(t => t.id.toString() === testId.toString())[0];
+	if (test){
+		const section = test.sections.filter(s => s.id.toString() === sectionId.toString())[0];
+		if (section){
+			const question = section.questions.filter(q => q.id.toString() === questionId.toString())[0];
+			if (question){
+				return question;
+			}
+		}
+	}
+	return {
+		error: 'Ошибка при получении данных!'
+	};
+}
+
 export function editMockTest(testId, test){
 	const testIdx = findIndex(tests, q => q.id.toString() === testId.toString());
 	tests[testIdx] = test;

@@ -84,7 +84,7 @@
     color: #444;
 
     &.caret--rotate {
-        transform: rotate(180deg);
+        transform: translateY(-50%) rotate(180deg) !important;
     }
 }
 

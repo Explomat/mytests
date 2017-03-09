@@ -1,6 +1,6 @@
 .dropdown-box {
     position: relative;
-    display: block;
+    display: inline-block;
     vertical-align: middle;
     font-size: inherit;
     margin-bottom: 16px;
@@ -26,7 +26,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         font-size: inherit;
-        
+        display: block;
     }
     
     .dropdown-box__container{

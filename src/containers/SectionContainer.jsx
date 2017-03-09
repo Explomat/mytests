@@ -3,7 +3,8 @@ import * as actionCreators from '../actions';
 import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
-	return { ...state };
+	const { openedTestSections } = state.app;
+	return { openedTestSections };
 }
 
 export default connect(mapStateToProps, actionCreators)(Section);

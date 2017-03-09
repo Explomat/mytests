@@ -5,11 +5,11 @@
 	
 	.sections {
 		.section-container {
+			margin-bottom: 16px;
 			.section {
 				.section__description{
 					position: relative;
 					cursor: pointer;
-					margin-bottom: 16px;
 					
 					.section__title {
 						
@@ -26,6 +26,7 @@
 				}
 				
 				.section__additional{
+					padding: 12px;
 					
 					.section__menu{
 						
@@ -33,6 +34,7 @@
 					
 					.questions {
 						.question {
+							cursor: pointer;
 							.question__title {
 								
 							}

@@ -10,6 +10,7 @@ import logMiddleware from './middleware/logMiddleware';
 import AppContainer from './containers/AppContainer';
 import TestsListContainer from './containers/TestsListContainer';
 import TestContainer from './containers/TestContainer';
+import QuestionContainer from './containers/QuestionContainer';
 import { dom } from './config';
 
 import 'classlist-polyfill';
@@ -29,6 +30,7 @@ ReactDOM.render(
 			<Route path='/' component={AppContainer}>
 				<IndexRoute component={TestsListContainer} />
 				<Route path='/tests/:testId' component={TestContainer} />
+				<Route path='/tests/:testId/:sectionId/:questionId' component={QuestionContainer} />
 			</Route>
 		</Router>
 	</Provider>,

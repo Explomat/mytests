@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import Question from './Question';
+import ShortQuestion from './ShortQuestion';
+import { TextView } from '../modules/text-label';
+import DropDown from '../modules/dropdown';
 import numDeclension from '../../utils/numDeclension';
+import cx from 'classnames';
 
 class Section extends Component {
 	
@@ -16,8 +19,13 @@ class Section extends Component {
 	}
 	
 	render(){
-		const title = this.props.title || {};
-		const { questions, isOpen } = this.props;
+		const { testId, id, title, order, questions, openedTestSections } = this.props;
+		const isOpen = openedTestSections.indexOf(id) !== -1;
+		const caretClasses = cx({
+			'caret': true,
+			'caret--rotate': isOpen,
+			'section__caret': true
+		});
 		return (
 			<div className='section-container'>
 				<div className='section'>
@@ -30,14 +38,19 @@ class Section extends Component {
 						<span className='section__question-count'>
 							{questions.length} {numDeclension(questions.length, 'вопрос', 'вопроса', 'вопросов')}
 						</span>
-						<span className='caret section__caret' />
+						<span className={caretClasses} />
 					</div>
 					{isOpen && <div className='section__additional'>
 						<div className='section__menu'>
-							menu
+							<TextView value={title.value} placeholder={title.title}/>
+							<DropDown
+								items={order.values}
+								selectedPayload={order.selected}
+								title={order.title}
+							/>
 						</div>
 						<div className='questions'>
-							{questions.map(q => <Question key={q.id} {...q} />)}
+							{questions.map(q => <ShortQuestion key={q.id} link={`#tests/${testId}/${id}/${q.id}`} {...q} />)}
 						</div>
 					</div>}
 				</div>

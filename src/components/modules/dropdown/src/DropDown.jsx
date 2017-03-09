@@ -157,7 +157,9 @@ class DropDown extends React.Component {
 					<span className={classesTitle}>{selectedText}</span>
 					<span className='dropdown-box__caret dropdown-box__caret--display' />
 				</button>
-				<ul className={classesChild}>{list}</ul>
+				<div className='dropdown-box__container'>
+					<ul className={classesChild}>{list}</ul>
+				</div>
 			</div>
 		);
 	}

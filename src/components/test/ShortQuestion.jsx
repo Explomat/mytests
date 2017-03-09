@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import Answer from './Answer';
 
-class Question extends Component {
+class ShortQuestion extends Component {
 	
 	render(){
 		const title = this.props.title || {};
@@ -18,4 +18,4 @@ class Question extends Component {
 	}
 }
 
-export default Question;
+export default ShortQuestion;

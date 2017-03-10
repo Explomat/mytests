@@ -59,7 +59,7 @@ class Section extends Component {
 								onChange={(e, val) => this.handleChangeField('order', val)}
 							/>
 						</div>
-						<div className='questions'>
+						<div className='short-questions'>
 							{questions.map(q => <ShortQuestion key={q.id} link={`#tests/${testId}/${id}/${q.id}`} {...q} />)}
 						</div>
 					</div>}

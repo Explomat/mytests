@@ -9,9 +9,11 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 exports.mockGetTests = mockGetTests;
 exports.getMockTest = getMockTest;
+exports.getMockQuestion = getMockQuestion;
+exports.saveMockQuestion = saveMockQuestion;
+exports.getMockQuestions = getMockQuestions;
 exports.editMockTest = editMockTest;
 exports.editMockSection = editMockSection;
-exports.editMockQuestion = editMockQuestion;
 
 var _filter = require('lodash/filter');
 
@@ -26,6 +28,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import indexOf from 'lodash/indexOf';
 
 var limitRows = 15;
+
+var testStatuses = [{ payload: 'publish', text: 'Открытый' }, { payload: 'project', text: 'Проект' }, { payload: 'secret', text: 'Скрытый' }];
 
 var sectionOrders = [{ payload: 'Sequential', text: 'Последовательно' }, { payload: 'Random', text: 'Случайно' }];
 
@@ -118,6 +122,12 @@ function mockTests() {
 				type: 'integer',
 				value: getRandomArbitrary(0, 5),
 				title: 'Количество попыток'
+			},
+			status: {
+				type: 'select',
+				selected: getRandomState(testStatuses),
+				title: 'Статус',
+				values: testStatuses
 			},
 			is_open: {
 				type: 'bool',
@@ -212,6 +222,11 @@ function mockTests() {
 						selected: getRandomState(questionTypes),
 						title: 'Тип',
 						values: questionTypes
+					},
+					question_points: { // Баллы
+						type: 'real',
+						value: getRandomArbitrary(1, 10),
+						title: 'Баллы'
 					}
 				};
 				questions.push(question);
@@ -232,12 +247,17 @@ function mockTests() {
 							value: getRandomArbitrary(0, 2),
 							title: 'Правильный ответ'
 						},
-						weight: {
-							type: 'real',
-							value: 0,
-							title: 'Вес'
-						},
 						condition: {
+							value: {
+								type: 'string',
+								value: '',
+								title: null
+							},
+							case_sensitive: {
+								type: 'bool',
+								value: false,
+								title: 'Зависит от регистра'
+							},
 							grading_option_id: {
 								type: 'select',
 								selected: getRandomState(conditionGradingOptions),
@@ -248,6 +268,11 @@ function mockTests() {
 								selected: getRandomState(conditionSentenceOption),
 								values: conditionSentenceOption
 							}
+						},
+						ws_score: { // Вес
+							type: 'string',
+							value: getRandomArbitrary(1, 5),
+							title: 'Вес'
 						}
 					};
 					answers.push(answer);
@@ -282,6 +307,60 @@ function getMockTest(testId) {
 	})[0];
 }
 
+function getMockQuestion(testId, sectionId, questionId) {
+	var test = tests.filter(function (t) {
+		return t.id.toString() === testId.toString();
+	})[0];
+	if (test) {
+		var section = test.sections.filter(function (s) {
+			return s.id.toString() === sectionId.toString();
+		})[0];
+		if (section) {
+			var question = section.questions.filter(function (q) {
+				return q.id.toString() === questionId.toString();
+			})[0];
+			if (question) {
+				return question;
+			}
+		}
+	}
+	return {
+		error: 'Ошибка при получении данных!'
+	};
+}
+
+function saveMockQuestion(testId, sectionId, questionId, question) {
+	var test = tests.filter(function (t) {
+		return t.id.toString() === testId.toString();
+	})[0];
+	if (test) {
+		var section = test.sections.filter(function (s) {
+			return s.id.toString() === sectionId.toString();
+		})[0];
+		if (section) {
+			var qId = questionId === null || questionId === undefined ? -1 : questionId;
+			var questionIdx = (0, _findIndex2.default)(section.questions, function (q) {
+				return q.id.toString() === qId.toString();
+			});
+			if (questionIdx === -1) {
+				section.questions.push(question);
+			} else {
+				section.questions[questionIdx] = question;
+			}
+		}
+	}
+}
+
+function getMockQuestions(testId) {
+	var test = tests.filter(function (t) {
+		return t.id.toString() === testId.toString();
+	})[0];
+	if (test) {
+		return test.questions;
+	}
+	return [];
+}
+
 function editMockTest(testId, test) {
 	var testIdx = (0, _findIndex2.default)(tests, function (q) {
 		return q.id.toString() === testId.toString();
@@ -300,21 +379,3 @@ function editMockSection(testId, sectionId, section) {
 		test.sections[sectionIdx] = section;
 	}
 }
-
-function editMockQuestion(testId, sectionId, questionId, question) {
-	var test = tests.filter(function (t) {
-		return t.id.toString() === testId.toString();
-	})[0];
-	if (test) {
-		var section = test.sections.filter(function (s) {
-			return s.id.toString() === sectionId.toString();
-		});
-		if (section) {
-			var questionIdx = (0, _findIndex2.default)(section.questions, function (q) {
-				return q.id.toString() === questionId.toString();
-			});
-			section.questions[questionIdx] = question;
-		}
-	}
-}
-

@@ -1,0 +1,47 @@
+.question {
+	cursor: pointer;
+	
+	.question__title {
+		
+	}
+	
+	.answers {
+		.answer {
+			position: relative;
+			padding: 8px;
+			border: 2px solid #ccc;
+			border-radius: 4px;
+			margin-bottom: 8px;
+			
+			.answer__menu{
+				height: 30px;
+				
+				.answer__direction{
+					margin-right: 8px;
+					float: right;
+				}
+				.answer__trash{
+					float: right;
+				}
+			}
+			
+			.multiple-choice__answer, {
+				.multiple-choice__answer-is-correct{
+					position: absolute;
+    				top: 8px;
+				}
+			}
+			
+			.multiple-response__answer{
+				.multiple-response__answer-is-correct{
+					position: absolute;
+    				top: 8px;
+				}	
+			}
+			
+			.answer__title {
+				
+			}
+		}
+	}
+}

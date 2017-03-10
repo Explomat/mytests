@@ -7,8 +7,8 @@ class ShortQuestion extends Component {
 		const title = this.props.title || {};
 		const { link } = this.props;
 		return (
-			<div className='question'>
-				<a href={link} className='question__title'>Question - {title.value}</a>
+			<div className='short-question'>
+				<a href={link} className='short-question__title'>Question - {title.value}</a>
 			</div>
 		);
 	}

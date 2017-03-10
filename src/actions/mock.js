@@ -206,11 +206,6 @@ function mockTests(){
 						value: `Question № ${k + 1}`,
 						title: 'Название вопроса'
 					},
-					weight: {
-						type: 'integer',
-						value: getRandomArbitrary(1, 10),
-						title: 'Вес вопроса'
-					},
 					type: {
 						type: 'select',
 						selected: getRandomState(questionTypes),
@@ -262,6 +257,11 @@ function mockTests(){
 								selected: getRandomState(conditionSentenceOption),
 								values: conditionSentenceOption
 							}
+						},
+						value: { // Соответствие
+							type: 'string',
+							value: '',
+							title: 'Соответствующий элемент'
 						},
 						ws_score: { // Вес
 							type: 'string',

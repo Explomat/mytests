@@ -1,46 +1,71 @@
 /* import { get } from '../utils/ajax';
 import { url } from '../config';*/
 import constants from '../constants';
-// import error from './error';
-import { mockGetTests, getMockTest, getMockQuestion } from './mock';
+import { info } from './appCreators';
+import { mockGetTests, getMockTest, getMockQuestion, getMockQuestions, saveMockQuestion } from './mock';
 
 export function getTest(testId){
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		dispatch({ type: constants.APP_CHANGE_TITLE, title: 'Тест' });
 		dispatch({ type: constants.TESTS_GET_TEST });
 		
-		/* const state = getState();
+		// если есть тест в редьюсере, то нужно вернуть значения из него, а не получать с сервера не измененные значения
+		// и получить с сервера только новые вопроосы, которые могут быть изменены в отдельноv окне
+		const state = getState();
 		if (state.test && state.test.id !== null && state.test.id.toString() === testId.toString()){
-			dispatch({
-				type: constants.TESTS_GET_TEST_SUCCESS,
-				response: state.test
+			setTimeout(() => {
+				const data = getMockQuestions(testId);
+				dispatch({
+					type: constants.TESTS_GET_TEST_SUCCESS,
+					response: { ...state.test, questions: data }
+				});
+			}, 300);
+			/* const path = config.url.createPath({
+				server_name: 'mytests',
+				action_name: 'Questions',
+				test_id: testId
 			});
-			return;
-		}*/
-		setTimeout(() => {
-			const data = getMockTest(testId);
-			dispatch({
-				type: constants.TESTS_GET_TEST_SUCCESS,
-				response: data
+			get(path)
+			.then(resp => JSON.parse(resp))
+			.then(data => {
+				if (data.error){
+					dispatch(error(data.error));
+				} else {
+					dispatch({
+						type: constants.TESTS_GET_TEST_SUCCESS,
+						response: { ...state.test, questions: data }
+					});
+				}
+			})
+			.catch(e => {
+				dispatch(error(e.message));
+			});*/
+		} else {
+			setTimeout(() => {
+				const data = getMockTest(testId);
+				dispatch({
+					type: constants.TESTS_GET_TEST_SUCCESS,
+					response: data
+				});
+			}, 300);
+			/* const path = config.url.createPath({
+				server_name: 'mytests',
+				action_name: 'Test',
+				test_id: testId
 			});
-		}, 300);
-		/* const path = config.url.createPath({
-			server_name: 'mytests',
-			action_name: 'Test',
-			test_id: testId
-		});
-		get(path, true)
-		.then(resp => JSON.parse(resp))
-		.then(data => {
-			if (data.error){
-				dispatch(error(data.error));
-			} else {
-				dispatch({ type: constants.TESTS_GET_TEST_SUCCESS, response: data });
-			}
-		})
-		.catch(e => {
-			dispatch(error(e.message));
-		});*/
+			get(path, true)
+			.then(resp => JSON.parse(resp))
+			.then(data => {
+				if (data.error){
+					dispatch(error(data.error));
+				} else {
+					dispatch({ type: constants.TESTS_GET_TEST_SUCCESS, response: data });
+				}
+			})
+			.catch(e => {
+				dispatch(error(e.message));
+			});*/
+		}
 	};
 }
 
@@ -143,6 +168,18 @@ export function getQuestion(testId, sectionId, questionId){
 	};
 }
 
+export function saveQuestion(testId, sectionId, questionId){
+	return (dispatch, getState) => {
+		const state = getState();
+		// dispatch({ type: constants.TESTS_SAVE_TEST_QUESTION });
+		
+		setTimeout(() => {
+			saveMockQuestion(testId, sectionId, questionId, state.question);
+			dispatch(info('Вопрос сохранен в базу.'));
+		});
+	};
+}
+
 export function toggleOpenSection(testId, sectionId){
 	return (dispatch, getState) => {
 		dispatch({
@@ -171,6 +208,14 @@ export function changeTestFieldInSection(sectionId, key, value){
 	return {
 		type: constants.TESTS_CHANGE_FIELD_IN_SECTION,
 		sectionId,
+		key,
+		value
+	};
+}
+
+export function changeQuestionField(key, value){
+	return {
+		type: constants.TESTS_CHANGE_QUESTION_FIELD,
 		key,
 		value
 	};

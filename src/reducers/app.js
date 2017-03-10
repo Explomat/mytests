@@ -3,22 +3,22 @@ import { setSuccess, setFailure } from './utils/setState';
 import assign from 'lodash/assign';
 
 function isError(state = null, action) {
-	const { error } = action;
-	if (error) {
-		return action.error;
+	const { errorMessage } = action;
+	if (errorMessage) {
+		return action.errorMessage;
 	}
 	return null;
 }
 
 function isInfo(state = null, action) {
-	const { info } = action;
-	if (info) {
-		return action.info;
+	const { infoMessage } = action;
+	if (infoMessage) {
+		return action.infoMessage;
 	}
 	return null;
 }
 
-export default function myapp(state = {
+export default function app(state = {
 	title: 'Тесты',
 	access: false,
 	isFetching: false,

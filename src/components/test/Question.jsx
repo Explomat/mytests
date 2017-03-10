@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TextView } from '../modules/text-label';
 import InputReal from '../modules/input-real';
 import DropDown from '../modules/dropdown';
+import { ButtonPrimary } from '../modules/button';
 import Answer from './Answer';
 
 class Question extends Component {
@@ -9,7 +10,14 @@ class Question extends Component {
 	constructor(props){
 		super(props);
 		
+		this.handleSave = this.handleSave.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
+	}
+	
+	handleSave(){
+		const { testId, sectionId } = this.props.params;
+		const { id } = this.props;
+		this.props.saveQuestion(testId, sectionId, id);
 	}
 	
 	handleChangeField(key, value){
@@ -20,6 +28,7 @@ class Question extends Component {
 		const { title, weight, type, answers } = this.props;
 		return (
 			<div className='question col-sm-5 col-md-4 col-lg-3'>
+				<ButtonPrimary onClick={this.handleSave} text='Сохранить' />
 				<TextView
 					value={title.value}
 					placeholder={title.title}

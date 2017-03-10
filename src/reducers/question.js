@@ -1,3 +1,4 @@
+import changeField from './utils/changeField';
 import constants from '../constants';
 import assign from 'lodash/assign';
 
@@ -23,6 +24,8 @@ export default function question(state = {
 		case constants.TESTS_GET_TEST_QUESTION:
 		case constants.TESTS_GET_TEST_QUESTION_SUCCESS:
 			return assign({}, state, action.response, { isFetching: isFetchingQuestion(state.isFetching, action) });
+		case constants.TESTS_CHANGE_QUESTION_FIELD:
+			return changeField(state, action.key, action.value);
 		default:
 			return state;
 	}

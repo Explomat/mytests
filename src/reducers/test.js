@@ -1,3 +1,4 @@
+import changeField from './utils/changeField';
 import constants from '../constants';
 import assign from 'lodash/assign';
 // import filter from 'lodash/filter';
@@ -25,19 +26,6 @@ function isFetchingTest(state = false, action){
 			return state;
 	}
 }*/
-
-function changeTestField(state, key, value){
-	if (!(key in state)) return state;
-	
-	const field = state[key];
-	if (!field.type) return state;
-	
-	if (field.type === 'select'){
-		const newState = { ...state, [key]: { ...field, selected: value } };
-		return newState;
-	}
-	return { ...state, [key]: { ...field, value } };
-}
 
 export default function test(state = {
 	id: null,
@@ -67,7 +55,7 @@ export default function test(state = {
 			return assign({}, state, action.response, { isFetching: isFetchingTest(state.isFetching, action) });
 			
 		case constants.TESTS_CHANGE_TEST_FIELD: {
-			return changeTestField(state, action.key, action.value);
+			return changeField(state, action.key, action.value);
 		}
 		
 		case constants.TESTS_TOGGLE_OPEN_SECTION: {
@@ -90,7 +78,7 @@ export default function test(state = {
 				...state,
 				sections: sections.map(s => {
 					return s.id === action.sectionId ?
-						changeTestField(s, action.key, action.value) :
+						changeField(s, action.key, action.value) :
 						s;
 				})
 			};

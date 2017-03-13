@@ -109,13 +109,20 @@ const TextView = React.createClass({
 		const isValidClass = !this.props.isValid(this.state.value) ? this.props.notValidClass : '';
 		const className = this.props.className ? this.props.className : '';
 		const inputClassName = this.props.inputClassName ? this.props.inputClassName : '';
+		const isPlaceholderClass = this.props.placeholder ? '' : 'input-box__input--empty-placeholder';
 		return (
 			<div className={'input-box ' + className} tabIndex={1} onBlur={this.handleDetranslate}>
 				<input
 					ref='inpt'
 					type={this.props.type}
 					value={this.state.value}
-					className={'input-box__input ' + isNotEmptyClass + ' ' + isValidClass + ' ' + inputClassName}
+					className={
+						'input-box__input ' +
+						isNotEmptyClass + ' ' +
+						isValidClass + ' ' +
+						inputClassName + ' ' +
+						isPlaceholderClass
+					}
 					onChange={this.handleChange}
 					onBlur={this.handleBlur}
 					onClick={this.props.onClick}

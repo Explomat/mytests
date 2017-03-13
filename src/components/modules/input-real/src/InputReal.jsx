@@ -6,7 +6,7 @@ import './style/input-real.scss';
 const InputReal = ({ value, title, ...props }) => {
 	return (
 		<div className='input-real'>
-			<span className='input-real__title'>{title}</span>
+			{title && <span className='input-real__title'>{title}</span>}
 			<NumericInput
 				value={value}
 				precision={2}
@@ -22,7 +22,7 @@ const InputReal = ({ value, title, ...props }) => {
 
 InputReal.propTypes = {
 	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-	title: PropTypes.string.isRequired
+	title: PropTypes.string
 };
 
 InputReal.defaultProps = {

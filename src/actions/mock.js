@@ -27,10 +27,10 @@ const questionTypes = [
 
 const conditionGradingOptions = [
 	{ payload: '=', text: '=' },
-	{ payload: '&gt;', text: '&gt;' },
-	{ payload: '&lt;', text: '&lt;' },
-	{ payload: '&lt;=', text: '&lt;=' },
-	{ payload: '&gt;=', text: '&gt;=' }
+	{ payload: '&gt;', text: '>' },
+	{ payload: '&lt;', text: '<' },
+	{ payload: '&lt;=', text: '>=' },
+	{ payload: '&gt;=', text: '>=' }
 ];
 
 const conditionSentenceOption = [

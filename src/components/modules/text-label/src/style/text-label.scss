@@ -82,7 +82,7 @@ $fontSizeXs: 12px;
     border-bottom: 1px solid rgba(0,0,0,.26);
     margin-top: 20px;
     outline: 0;
-    height: 35px;
+    height: 32px;
     width: 100%;
     color: $primaryTextColor;
     font-size: inherit;
@@ -98,6 +98,10 @@ $fontSizeXs: 12px;
         &.input-box__input--not-valid {
             border-bottom: 2px solid #ff5252;
         }
+    }
+    
+    &.input-box__input--empty-placeholder{
+    	margin-top: 0px;
     }
 }
 

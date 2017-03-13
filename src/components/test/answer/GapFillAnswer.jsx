@@ -29,16 +29,20 @@ class GapFillAnswer extends Component {
 						onChange={val => this.handleChangeField('ws_score', val)}
 					/>
 				}
-				<DropDown
-					items={sentence_option_id.values}
-					selectedPayload={sentence_option_id.selected}
-					onChange={(e, val) => this.handleChangeField('sentence_option_id', val)}
-				/>
-				<TextView
-					value={value.value}
-					placeholder={value.title}
-					onBlur={val => this.handleChangeField('value', val)}
-				/>
+				<div className='gap-fill__condition clearfix'>
+					<DropDown
+						items={sentence_option_id.values}
+						selectedPayload={sentence_option_id.selected}
+						className='gap-fill__condition-icon'
+						onChange={(e, val) => this.handleChangeField('sentence_option_id', val)}
+					/>
+					<TextView
+						value={value.value}
+						placeholder={value.title}
+						className='gap-fill__condition-expression'
+						onBlur={val => this.handleChangeField('value', val)}
+					/>
+				</div>
 				<Checkbox
 					checked={case_sensitive.value}
 					label={case_sensitive.title}

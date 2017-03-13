@@ -180,6 +180,31 @@ export function saveQuestion(testId, sectionId, questionId){
 	};
 }
 
+export function removeAnswer(answerId){
+	return {
+		type: constants.TESTS_REMOVE_ANSWER,
+		answerId
+	};
+}
+export function moveUpAnswer(answerId){
+	return {
+		type: constants.TESTS_MOVE_UP_ANSWER,
+		answerId
+	};
+}
+export function moveDownAnswer(answerId){
+	return {
+		type: constants.TESTS_MOVE_DOWN_ANSWER,
+		answerId
+	};
+}
+
+export function addNewAnswer(){
+	return {
+		type: constants.TESTS_ADD_NEW_ANSWER
+	};
+}
+
 export function toggleOpenSection(testId, sectionId){
 	return (dispatch, getState) => {
 		dispatch({

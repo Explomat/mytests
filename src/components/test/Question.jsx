@@ -5,6 +5,7 @@ import DropDown from '../modules/dropdown';
 import { ButtonPrimary } from '../modules/button';
 import Checkbox from '../modules/checkbox';
 import Answer from './answer';
+import numDeclension from '../../utils/numDeclension';
 
 class Question extends Component {
 	
@@ -14,6 +15,7 @@ class Question extends Component {
 		this.handleSave = this.handleSave.bind(this);
 		this.handleToggleDisplayWsScore = this.handleToggleDisplayWsScore.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
+		this.handleAddNewAnswer = this.handleAddNewAnswer.bind(this);
 		this.state = {
 			displayWsScore: false
 		};
@@ -33,9 +35,15 @@ class Question extends Component {
 		this.props.changeQuestionField(key, value);
 	}
 	
+	handleAddNewAnswer(){
+		const { id } = this.props;
+		this.props.addNewAnswer(id);
+	}
+	
 	render(){
 		const { title, question_points, type, answers } = this.props;
 		const { displayWsScore } = this.state;
+		const answersLen = answers.length;
 		return (
 			<div className='question col-sm-5 col-md-4 col-lg-3'>
 				<div className='question__settings'>
@@ -66,14 +74,23 @@ class Question extends Component {
 					/>
 				</div>
 				<div className='answers'>
-					{answers.map(a =>
-						<Answer
-							key={a.id}
-							type={type}
-							displayWsScore={displayWsScore}
-							{...a}
-						/>
-					)}
+					<div className='answers__title'>{answersLen} {numDeclension(answersLen, 'ответ', 'ответа', 'ответов')}</div>
+					<ButtonPrimary text='Добавить ответ' onClick={this.handleAddNewAnswer}/>
+					{answers.map((a, index) => {
+						return (
+							<Answer
+								key={a.id}
+								index={index}
+								length={answersLen}
+								type={type}
+								displayWsScore={displayWsScore}
+								removeAnswer={this.props.removeAnswer}
+								moveUpAnswer={this.props.moveUpAnswer}
+								moveDownAnswer={this.props.moveDownAnswer}
+								{...a}
+							/>
+						);
+					})}
 				</div>
 			</div>
 		);

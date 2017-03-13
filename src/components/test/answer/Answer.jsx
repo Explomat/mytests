@@ -20,18 +20,49 @@ class Answer extends Component {
 	
 	constructor(props){
 		super(props);
+		this.handleRemove = this.handleRemove.bind(this);
+		this.handleMoveUpAnswer = this.handleMoveUpAnswer.bind(this);
+		this.handleMoveDownAnswer = this.handleMoveDownAnswer.bind(this);
+	}
+	
+	handleRemove(){
+		const { id, removeAnswer } = this.props;
+		removeAnswer(id);
+	}
+	
+	handleMoveUpAnswer(){
+		const { id, moveUpAnswer } = this.props;
+		moveUpAnswer(id);
+	}
+	
+	handleMoveDownAnswer(){
+		const { id, moveDownAnswer } = this.props;
+		moveDownAnswer(id);
 	}
 	
 	render(){
-		const { type } = this.props;
+		const { index, length, type } = this.props;
 		const AnswerComponent = answers[type.selected] ? answers[type.selected] : null;
 		return (
 			<div className='answer'>
 				<div className='answer__menu clearfix'>
-					<i className='answer__trash icon-trash' />
+					<i
+						className='answer__trash icon-trash'
+						onClick={this.handleRemove}
+					/>
 					<span className='answer__direction'>
-						<i className='icon-down-open-2' />
-						<i className='icon-up-open-2' />
+						{(index !== 0) &&
+							<i
+								className='icon-up-open-2'
+								onClick={this.handleMoveUpAnswer}
+							/>
+						}
+						{(index !== length - 1) &&
+							<i
+								className='icon-down-open-2'
+								onClick={this.handleMoveDownAnswer}
+							/>
+						}
 					</span>
 				</div>
 				{AnswerComponent === null ? null : <AnswerComponent {...this.props} />}

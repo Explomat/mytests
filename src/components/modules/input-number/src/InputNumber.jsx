@@ -6,7 +6,7 @@ import './style/input-number.scss';
 const InputNumber = ({ value, title, ...props }) => {
 	return (
 		<div className='input-number'>
-			<span className='input-number__title'>{title}</span>
+			{title && <span className='input-number__title'>{title}</span>}
 			<NumericInput
 				value={value}
 				step={1}
@@ -21,7 +21,7 @@ const InputNumber = ({ value, title, ...props }) => {
 
 InputNumber.propTypes = {
 	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-	title: PropTypes.string.isRequired
+	title: PropTypes.string
 };
 
 InputNumber.defaultProps = {

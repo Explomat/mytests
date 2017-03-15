@@ -2,7 +2,14 @@
 import { url } from '../config';*/
 import constants from '../constants';
 import { info } from './appCreators';
-import { mockGetTests, getMockTest, getMockQuestion, getMockQuestions, saveMockQuestion } from './mock';
+import {
+	mockGetTests,
+	getMockTest,
+	getMockQuestion,
+	getMockQuestions,
+	saveMockQuestion,
+	addMockNewAnswer
+} from './mock';
 
 export function getTest(testId){
 	return (dispatch, getState) => {
@@ -200,8 +207,14 @@ export function moveDownAnswer(answerId){
 }
 
 export function addNewAnswer(){
-	return {
-		type: constants.TESTS_ADD_NEW_ANSWER
+	return dispatch => {
+		setTimeout(() => {
+			const answer = addMockNewAnswer();
+			dispatch({
+				type: constants.TESTS_ADD_NEW_ANSWER_SUCCESS,
+				answer
+			});
+		}, 300);
 	};
 }
 

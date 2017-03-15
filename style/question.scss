@@ -15,64 +15,72 @@
 		    display: inline-block;
 		}
 		
-		.answer {
+		.answer__container{
 			position: relative;
-			padding: 8px;
-			border: 2px solid #ccc;
-			border-radius: 4px;
-			margin-bottom: 8px;
-			
-			.answer__menu{
-				height: 30px;
+			.answer__container-number {
+				position: absolute;
+			}
+			.answer {
+				position: relative;
+				padding: 8px;
+				border: 2px solid #ccc;
+				border-radius: 4px;
+				margin-bottom: 8px;
+				margin-left: 16px;
 				
-				.answer__direction{
-					margin-right: 8px;
-					float: right;
-				}
-				.answer__trash{
-					float: right;
-				}
-			}
-			
-			.multiple-choice__answer, {
-				.multiple-choice__answer-is-correct{
-					position: absolute;
-    				top: 8px;
-				}
-			}
-			
-			.multiple-response__answer{
-				.multiple-response__answer-is-correct{
-					position: absolute;
-    				top: 8px;
-				}	
-			}
-			
-			.gap-fill__answer{
-				.gap-fill__condition{
-					.gap-fill__condition-icon{
-						width: 25%;
+				.answer__menu{
+					height: 30px;
+					
+					.answer__direction{
+						margin-right: 8px;
+						float: right;
 					}
-					.gap-fill__condition-expression{
-						width: 70%;
+					.answer__trash{
 						float: right;
 					}
 				}
-			}
-			
-			.numerical-fill-in-blank__answer{
-				.numerical-fill-in-blank__condition{
-					.numerical-fill-in-blank__condition-icon{
-						width: 20%;
-					}
-					.numerical-fill-in-blank__condition-expression{
-						width: 75%;
-						float: right;
+				
+				.multiple-choice__answer, {
+					.multiple-choice__answer-is-correct{
+						position: absolute;
+	    				top: 8px;
 					}
 				}
+				
+				.multiple-response__answer{
+					.multiple-response__answer-is-correct{
+						position: absolute;
+	    				top: 8px;
+					}	
+				}
+				
+				.gap-fill__answer{
+					.gap-fill__condition{
+						.gap-fill__condition-icon{
+							width: 25%;
+						}
+						.gap-fill__condition-expression{
+							width: 70%;
+							float: right;
+						}
+					}
+				}
+				
+				.numerical-fill-in-blank__answer{
+					.numerical-fill-in-blank__condition{
+						.numerical-fill-in-blank__condition-icon{
+							width: 20%;
+						}
+						.numerical-fill-in-blank__condition-expression{
+							width: 75%;
+							float: right;
+						}
+					}
+				}
+				
+				
 			}
-			
-			
 		}
+		
 	}
 }

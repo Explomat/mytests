@@ -44,34 +44,37 @@ class Answer extends Component {
 		const { index, length, type } = this.props;
 		const AnswerComponent = answers[type.selected] ? answers[type.selected] : null;
 		return (
-			<div className='answer'>
-				<div className='answer__menu clearfix'>
-					<i
-						className='answer__trash icon-trash'
-						onClick={this.handleRemove}
-					/>
-					<span className='answer__direction'>
-						{(index !== 0) &&
-							<i
-								className='icon-up-open-2'
-								onClick={this.handleMoveUpAnswer}
-							/>
-						}
-						{(index !== length - 1) &&
-							<i
-								className='icon-down-open-2'
-								onClick={this.handleMoveDownAnswer}
-							/>
-						}
-					</span>
+			<div className='answer__container'>
+				<span className='answer__container-number'>{index + 1}</span>
+				<div className='answer'>
+					<div className='answer__menu clearfix'>
+						<i
+							className='answer__trash icon-trash'
+							onClick={this.handleRemove}
+						/>
+						<span className='answer__direction'>
+							{(index !== 0) &&
+								<i
+									className='icon-up-open-2'
+									onClick={this.handleMoveUpAnswer}
+								/>
+							}
+							{(index !== length - 1) &&
+								<i
+									className='icon-down-open-2'
+									onClick={this.handleMoveDownAnswer}
+								/>
+							}
+						</span>
+					</div>
+					{AnswerComponent === null ? null : <AnswerComponent {...this.props} />}
+					{/* <DropDown
+						items={type.values}
+						selectedPayload={type.selected}
+						title={type.title}
+						onChange={(e, val) => this.handleChangeField('type', val)}
+					/>*/}
 				</div>
-				{AnswerComponent === null ? null : <AnswerComponent {...this.props} />}
-				{/* <DropDown
-					items={type.values}
-					selectedPayload={type.selected}
-					title={type.title}
-					onChange={(e, val) => this.handleChangeField('type', val)}
-				/>*/}
 			</div>
 		);
 	}

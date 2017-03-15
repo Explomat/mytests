@@ -12,6 +12,19 @@ function isFetchingQuestion(state = false, action){
 	return false;
 }
 
+function answer(state = {}, action) {
+	switch (action.type) {
+		case constants.TESTS_ADD_NEW_ANSWER_SUCCESS: {
+			return {
+				...state,
+				...action.answer
+			};
+		}
+		default:
+			return state;
+	}
+}
+
 
 export default function question(state = {
 	id: null,
@@ -75,8 +88,12 @@ export default function question(state = {
 				answers: state.answers.map(a => a)
 			};
 		}
-		case constants.TESTS_ADD_NEW_ANSWER: {
-			return state;
+		case constants.TESTS_ADD_NEW_ANSWER_SUCCESS: {
+			const a = answer(undefined, action);
+			return {
+				...state,
+				answers: state.answers.concat([ a ])
+			};
 		}
 		default:
 			return state;

@@ -1,6 +1,7 @@
 // import numberToWords from 'number-to-words';
 import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
+import uuid from '../utils/uuid';
 // import indexOf from 'lodash/indexOf';
 
 const limitRows = 15;
@@ -337,6 +338,55 @@ export function getMockQuestions(testId){
 		return test.questions;
 	}
 	return [];
+}
+
+export function addMockNewAnswer(){
+	return {
+		id: uuid(),
+		is_new: true,
+		text: {
+			type: 'string',
+			value: '',
+			title: 'Ответ'
+		},
+		is_correct_answer: {
+			type: 'bool',
+			value: false,
+			title: 'Правильный ответ'
+		},
+		condition: {
+			value: {
+				type: 'string',
+				value: '',
+				title: null
+			},
+			case_sensitive: {
+				type: 'bool',
+				value: false,
+				title: 'Зависит от регистра'
+			},
+			grading_option_id: {
+				type: 'select',
+				selected: conditionGradingOptions[0].payload,
+				values: conditionGradingOptions
+			},
+			sentence_option_id: {
+				type: 'select',
+				selected: conditionSentenceOption[0].payload,
+				values: conditionSentenceOption
+			}
+		},
+		value: { // Соответствие
+			type: 'string',
+			value: '',
+			title: 'Соответствующий элемент'
+		},
+		ws_score: { // Вес
+			type: 'string',
+			value: '',
+			title: 'Вес'
+		}
+	};
 }
 
 export function editMockTest(testId, test){

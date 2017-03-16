@@ -15,6 +15,7 @@ class Question extends Component {
 		this.handleSave = this.handleSave.bind(this);
 		this.handleToggleDisplayWsScore = this.handleToggleDisplayWsScore.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
+		this.handleChangeQuestionType = this.handleChangeQuestionType.bind(this);
 		this.handleAddNewAnswer = this.handleAddNewAnswer.bind(this);
 		this.state = {
 			displayWsScore: false
@@ -33,6 +34,10 @@ class Question extends Component {
 	
 	handleChangeField(key, value){
 		this.props.changeQuestionField(key, value);
+	}
+	
+	handleChangeQuestionType(e, payload){
+		this.props.changeQuestionType(payload);
 	}
 	
 	handleAddNewAnswer(){
@@ -70,7 +75,7 @@ class Question extends Component {
 						items={type.values}
 						selectedPayload={type.selected}
 						title={type.title}
-						onChange={(e, val) => this.handleChangeField('type', val)}
+						onChange={this.handleChangeQuestionType}
 					/>
 				</div>
 				<div className='answers'>
@@ -84,6 +89,7 @@ class Question extends Component {
 								length={answersLen}
 								type={type}
 								displayWsScore={displayWsScore}
+								selectAnswer={this.props.selectAnswer}
 								removeAnswer={this.props.removeAnswer}
 								moveUpAnswer={this.props.moveUpAnswer}
 								moveDownAnswer={this.props.moveDownAnswer}

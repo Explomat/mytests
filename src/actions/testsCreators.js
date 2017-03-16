@@ -187,6 +187,13 @@ export function saveQuestion(testId, sectionId, questionId){
 	};
 }
 
+
+export function selectAnswer(answerId){
+	return {
+		type: constants.TESTS_SELECT_ANSWER,
+		answerId
+	};
+}
 export function removeAnswer(answerId){
 	return {
 		type: constants.TESTS_REMOVE_ANSWER,
@@ -256,6 +263,13 @@ export function changeQuestionField(key, value){
 		type: constants.TESTS_CHANGE_QUESTION_FIELD,
 		key,
 		value
+	};
+}
+
+export function changeQuestionType(payload){
+	return {
+		type: constants.TESTS_CHANGE_TEST_QUESTION_TYPE,
+		payload
 	};
 }
 

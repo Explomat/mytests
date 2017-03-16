@@ -40,6 +40,61 @@ export default function question(state = {
 			return assign({}, state, action.response, { isFetching: isFetchingQuestion(state.isFetching, action) });
 		case constants.TESTS_CHANGE_QUESTION_FIELD:
 			return changeField(state, action.key, action.value);
+		case constants.TESTS_CHANGE_TEST_QUESTION_TYPE:{
+			const { answers } = state;
+			const newState = changeField(state, 'type', action.payload);
+			if (action.payload === 'multiple_choice') {
+				return {
+					...newState,
+					answers: answers.map(a => {
+						const { is_correct_answer } = a;
+						return {
+							...a,
+							is_correct_answer: {
+								...is_correct_answer,
+								value: false
+							}
+						};
+					})
+				};
+			}
+			return newState;
+		}
+		
+		case constants.TESTS_SELECT_ANSWER:{
+			const { type, answers } = state;
+			const { selected } = type;
+			const ans = answers.map(a => {
+				const { is_correct_answer } = a;
+				if (selected === 'multiple_choice') {
+					return a.id === action.answerId ? {
+						...a,
+						is_correct_answer: {
+							...is_correct_answer,
+							value: true
+						}
+					} : {
+						...a,
+						is_correct_answer: {
+							...is_correct_answer,
+							value: false
+						}
+					};
+				}
+				return a.id === action.answerId ? {
+					...a,
+					is_correct_answer: {
+						...is_correct_answer,
+						value: true
+					}
+				} : a;
+			});
+			return {
+				...state,
+				answers: ans
+			};
+		}
+		
 		case constants.TESTS_REMOVE_ANSWER: {
 			return {
 				...state,

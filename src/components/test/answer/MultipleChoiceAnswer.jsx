@@ -5,6 +5,22 @@ import Checkbox from '../../modules/checkbox';
 
 class MultipleChoiceAnswer extends Component {
 	
+	constructor(props){
+		super(props);
+		this.handleSelectAnswer = this.handleSelectAnswer.bind(this);
+		this.handleChangeField = this.handleChangeField.bind(this);
+	}
+	
+	handleSelectAnswer(){
+		const { id } = this.props;
+		this.props.selectAnswer(id);
+	}
+	
+	handleChangeField(key, value){
+		const { id } = this.props;
+		this.props.onChangeFiled(id, key, value);
+	}
+	
 	render(){
 		const {
 			text,
@@ -18,7 +34,7 @@ class MultipleChoiceAnswer extends Component {
 					checked={is_correct_answer.value}
 					label={is_correct_answer.title}
 					className='multiple-choice__answer-is-correct'
-					onChange={val => this.handleChangeField('is_correct_answer', val)}
+					onChange={this.handleSelectAnswer}
 				/>
 				<TextView
 					value={text.value}

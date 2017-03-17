@@ -90,6 +90,7 @@ class Question extends Component {
 								type={type}
 								displayWsScore={displayWsScore}
 								selectAnswer={this.props.selectAnswer}
+								changeAnswerField={this.props.changeAnswerField}
 								removeAnswer={this.props.removeAnswer}
 								moveUpAnswer={this.props.moveUpAnswer}
 								moveDownAnswer={this.props.moveDownAnswer}

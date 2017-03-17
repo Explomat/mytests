@@ -7,8 +7,7 @@ const remoteConstants = createRemoteActions([
 	'TESTS_GET_TESTS',
 	'TESTS_GET_TESTS_ON_SCROLL',
 	'TESTS_GET_TEST',
-	'TESTS_GET_TEST_QUESTION',
-	'TESTS_ADD_NEW_ANSWER'
+	'TESTS_GET_TEST_QUESTION'
 ]);
 
 const constants = keyMirror({
@@ -22,10 +21,12 @@ const constants = keyMirror({
 	'TESTS_CHANGE_TEST_QUESTION_TYPE': null,
 	'TESTS_CHANGE_FIELD_IN_SECTION': null,
 	'TESTS_CHANGE_QUESTION_FIELD': null,
+	'TESTS_ADD_NEW_ANSWER': null,
 	'TESTS_SELECT_ANSWER': null,
 	'TESTS_REMOVE_ANSWER': null,
 	'TESTS_MOVE_UP_ANSWER': null,
-	'TESTS_MOVE_DOWN_ANSWER': null
+	'TESTS_MOVE_DOWN_ANSWER': null,
+	'TESTS_CHANGE_ANSWER_FIELD': null
 });
 
 export default merge(remoteConstants, constants);

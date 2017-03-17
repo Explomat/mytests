@@ -16,7 +16,7 @@ function isFetchingTests(state = false, action){
 function receiveTests(state = [], action){
 	const { type } = action;
 	if (type === constants.TESTS_GET_TESTS_SUCCESS){
-		return assign([], action.tests);
+		return state.concat([], action.tests);
 	}
 	return state;
 }
@@ -39,40 +39,45 @@ function receiveTestsOnScroll(state = [], action){
 }
 
 export default function testsData(state = {
-	tests: [],
+	data: {
+		tests: [],
+		search: '',
+		page: 0,
+		pages_count: 1,
+		count: 0,
+		order: 'title:desc'
+	},
+	templates: {},
 	isFetching: false,
-	isFetchingScroll: false,
-	search: '',
-	page: 0,
-	pages_count: 1,
-	count: 0,
-	order: 'title:desc'
-					
+	isFetchingScroll: false
 }, action) {
 	switch (action.type) {
 		case constants.TESTS_GET_TESTS:
 		case constants.TESTS_GET_TESTS_SUCCESS: {
-			return assign({}, state, {
-				tests: receiveTests(state.tests, action),
-				isFetching: isFetchingTests(state.isFetching, action),
-				search: action.search,
-				page: action.page,
-				pages_count: action.pages_count,
-				count: action.count,
-				statusFilter: {
-					states: concat(defaultStates, action.states || []),
-					selected: action.state_id || 'all'
+			const { data } = action.response;
+			return {
+				...state,
+				data: {
+					...data,
+					tests: state.concat([], data.tests),
+					statusFilter: {
+						states: concat(defaultStates, action.states || []),
+						selected: action.state_id || 'all'
+					}
 				},
-				order: action.order
-			});
+				isFetching: isFetchingTests(state.isFetching, action)
+			};
 		}
 		
 		case constants.TESTS_GET_TESTS_ON_SCROLL:
 		case constants.TESTS_GET_TESTS_ON_SCROLL_SUCCESS: {
+			const { tests } = state.data;
 			return assign({}, state, {
-				tests: receiveTestsOnScroll(state.tests, action),
-				isFetchingScroll: isFetchingTestsScroll(state.isFetchingScroll, action),
-				page: action.page
+				data: {
+					tests: receiveTestsOnScroll(tests, action),
+					page: action.page
+				},
+				isFetchingScroll: isFetchingTestsScroll(state.isFetchingScroll, action)
 			});
 		}
 

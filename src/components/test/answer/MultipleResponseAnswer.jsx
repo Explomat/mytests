@@ -8,11 +8,17 @@ class MultipleResponseAnswer extends Component {
 	constructor(props){
 		super(props);
 		this.handleSelectAnswer = this.handleSelectAnswer.bind(this);
+		this.handleChangeField = this.handleChangeField.bind(this);
 	}
 	
 	handleSelectAnswer(){
 		const { id } = this.props;
 		this.props.selectAnswer(id);
+	}
+	
+	handleChangeField(key, value){
+		const { id } = this.props;
+		this.props.changeAnswerField(id, key, value);
 	}
 	
 	render(){

@@ -7,8 +7,7 @@ import {
 	getMockTest,
 	getMockQuestion,
 	getMockQuestions,
-	saveMockQuestion,
-	addMockNewAnswer
+	saveMockQuestion
 } from './mock';
 
 export function getTest(testId){
@@ -19,12 +18,13 @@ export function getTest(testId){
 		// если есть тест в редьюсере, то нужно вернуть значения из него, а не получать с сервера не измененные значения
 		// и получить с сервера только новые вопроосы, которые могут быть изменены в отдельноv окне
 		const state = getState();
-		if (state.test && state.test.id !== null && state.test.id.toString() === testId.toString()){
+		const { data, templates } = state.test;
+		if (data && data.id !== null && data.id.toString() === testId.toString()){
 			setTimeout(() => {
-				const data = getMockQuestions(testId);
+				const questions = getMockQuestions(testId);
 				dispatch({
 					type: constants.TESTS_GET_TEST_SUCCESS,
-					response: { ...state.test, questions: data }
+					response: { data: { ...data, questions }, templates }
 				});
 			}, 300);
 			/* const path = config.url.createPath({
@@ -49,10 +49,9 @@ export function getTest(testId){
 			});*/
 		} else {
 			setTimeout(() => {
-				const data = getMockTest(testId);
 				dispatch({
 					type: constants.TESTS_GET_TEST_SUCCESS,
-					response: data
+					response: getMockTest(testId)
 				});
 			}, 300);
 			/* const path = config.url.createPath({
@@ -85,10 +84,12 @@ export function getTests(search, page, order){
 			const data = mockGetTests(search, page, order);
 			dispatch({
 				type: constants.TESTS_GET_TESTS_SUCCESS,
-				search,
-				page,
-				order,
-				...data
+				response: {
+					search,
+					page,
+					order,
+					...data
+				}
 			});
 		}, 300);
 		
@@ -181,7 +182,7 @@ export function saveQuestion(testId, sectionId, questionId){
 		// dispatch({ type: constants.TESTS_SAVE_TEST_QUESTION });
 		
 		setTimeout(() => {
-			saveMockQuestion(testId, sectionId, questionId, state.question);
+			saveMockQuestion(testId, sectionId, questionId, state.question.data);
 			dispatch(info('Вопрос сохранен в базу.'));
 		});
 	};
@@ -214,7 +215,10 @@ export function moveDownAnswer(answerId){
 }
 
 export function addNewAnswer(){
-	return dispatch => {
+	return {
+		type: constants.TESTS_ADD_NEW_ANSWER
+	};
+	/* return dispatch => {
 		setTimeout(() => {
 			const answer = addMockNewAnswer();
 			dispatch({
@@ -222,7 +226,7 @@ export function addNewAnswer(){
 				answer
 			});
 		}, 300);
-	};
+	};*/
 }
 
 export function toggleOpenSection(testId, sectionId){
@@ -234,9 +238,10 @@ export function toggleOpenSection(testId, sectionId){
 		});
 		
 		const state = getState();
+		const { sections } = state.test.data;
 		dispatch({
 			type: constants.APP_CHANGE_OPENED_TEST_SECTIONS,
-			sections: state.test.sections
+			sections
 		});
 	};
 }
@@ -261,6 +266,15 @@ export function changeTestFieldInSection(sectionId, key, value){
 export function changeQuestionField(key, value){
 	return {
 		type: constants.TESTS_CHANGE_QUESTION_FIELD,
+		key,
+		value
+	};
+}
+
+export function changeAnswerField(id, key, value){
+	return {
+		type: constants.TESTS_CHANGE_ANSWER_FIELD,
+		answerId: id,
 		key,
 		value
 	};

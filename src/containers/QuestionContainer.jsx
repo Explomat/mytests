@@ -21,7 +21,8 @@ class QuestionContainer extends Component {
 }
 
 function mapStateToProps(state) {
-	return { ...state.question };
+	const { data, isFetching } = state.question;
+	return { ...data, isFetching };
 }
 
 export default connect(mapStateToProps, actionCreators)(QuestionContainer);

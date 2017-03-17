@@ -5,6 +5,16 @@ import DropDown from '../../modules/dropdown';
 
 class NumericalFillInBlank extends Component {
 	
+	constructor(props){
+		super(props);
+		this.handleChangeField = this.handleChangeField.bind(this);
+	}
+	
+	handleChangeField(key, value){
+		const { id } = this.props;
+		this.props.changeAnswerField(id, key, value);
+	}
+	
 	render(){
 		const {
 			text,

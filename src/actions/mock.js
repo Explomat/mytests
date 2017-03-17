@@ -290,14 +290,146 @@ export function mockGetTests(search, page, order){
 		};
 	});
 	return {
-		tests: _tests,
-		pages_count: data.pagesCount,
-		count: data.count
+		data: {
+			tests: _tests,
+			pages_count: data.pagesCount,
+			count: data.count
+		},
+		templates: {
+			test: {
+				id: null,
+				code: {
+					type: 'string',
+					value: '',
+					title: 'Код'
+				},
+				title: {
+					type: 'string',
+					value: '',
+					title: 'Название раздела'
+				},
+				passing_score: {
+					type: 'integer',
+					value: 0,
+					title: 'Проходной балл'
+				},
+				duration: {
+					type: 'integer',
+					value: 0,
+					title: 'Длительность (мин.)'
+				},
+				duration_days: {
+					type: 'integer',
+					value: 0,
+					title: 'Продолжительность (дней)'
+				},
+				attempts_num: {
+					type: 'integer',
+					value: 1,
+					title: 'Количество попыток'
+				},
+				status: {
+					type: 'select',
+					selected: testStatuses[0].payload,
+					title: 'Статус',
+					values: testStatuses
+				},
+				is_open: {
+					type: 'bool',
+					value: false,
+					title: 'Открытый тест (возможно самостоятельно назначить тест)'
+				},
+				not_sent_correct_answer: {
+					type: 'bool',
+					value: false,
+					title: 'Не передавать проигрывателю информацию о правильных ответах на вопросы'
+				},
+				display_result: {
+					type: 'bool',
+					value: false,
+					title: 'Показывать результаты теста (резюме по тесту)'
+				},
+				display_correct_answer: {
+					type: 'bool',
+					value: false,
+					title: 'Показывать правильный ответ'
+				},
+				not_disp_last_attempt: {
+					type: 'bool',
+					value: false,
+					title: 'Не показывать сообщение об исчерпании попыток ответа'
+				},
+				not_display_feedback: {
+					type: 'bool',
+					value: false,
+					title: 'Не показывать в данном тесте сообщения обратной связи'
+				},
+				display_result_report: {
+					type: 'bool',
+					value: false,
+					title: 'Показывать отчет о результатах теста'
+				},
+				display_answers_in_report: {
+					type: 'bool',
+					value: true,
+					title: 'Показывать варианты ответов в отчете по тестированию'
+				},
+				display_correct_answer_in_report: {
+					type: 'bool',
+					value: true,
+					title: 'Показывать правильный ответ в отчете по тестированию'
+				},
+				not_display_unfinished_score: {
+					type: 'bool',
+					value: false,
+					title: 'Не показывать набранный балл для завершенных тестов'
+				}
+			}
+		}
 	};
 }
 
 export function getMockTest(testId){
-	return tests.filter(t => t.id.toString() === testId.toString())[0];
+	return {
+		data: tests.filter(t => t.id.toString() === testId.toString())[0],
+		templates: {
+			section: {
+				id: null,
+				title: {
+					type: 'string',
+					value: '',
+					title: 'Название раздела'
+				},
+				order: {
+					type: 'select',
+					selected: sectionOrders[0].payload,
+					title: 'Порядок следования вопросов',
+					values: sectionOrders
+				},
+				questions: []
+			},
+			question: {
+				id: null,
+				title: {
+					type: 'string',
+					value: '',
+					title: 'Название вопроса'
+				},
+				type: {
+					type: 'select',
+					selected: questionTypes[0].payload,
+					title: 'Тип',
+					values: questionTypes
+				},
+				question_points: { // Баллы
+					type: 'real',
+					value: 0,
+					title: 'Баллы'
+				},
+				answers: []
+			}
+		}
+	};
 }
 
 export function getMockQuestion(testId, sectionId, questionId){
@@ -307,7 +439,56 @@ export function getMockQuestion(testId, sectionId, questionId){
 		if (section){
 			const question = section.questions.filter(q => q.id.toString() === questionId.toString())[0];
 			if (question){
-				return question;
+				return {
+					data: question,
+					templates: {
+						answer: {
+							id: null,
+							text: {
+								type: 'string',
+								value: '',
+								title: 'Ответ'
+							},
+							is_correct_answer: {
+								type: 'bool',
+								value: false,
+								title: 'Правильный ответ'
+							},
+							condition: {
+								value: {
+									type: 'string',
+									value: '',
+									title: null
+								},
+								case_sensitive: {
+									type: 'bool',
+									value: false,
+									title: 'Зависит от регистра'
+								},
+								grading_option_id: {
+									type: 'select',
+									selected: conditionGradingOptions[0].payload,
+									values: conditionGradingOptions
+								},
+								sentence_option_id: {
+									type: 'select',
+									selected: conditionSentenceOption[0].payload,
+									values: conditionSentenceOption
+								}
+							},
+							value: { // Соответствие
+								type: 'string',
+								value: '',
+								title: 'Соответствующий элемент'
+							},
+							ws_score: { // Вес
+								type: 'string',
+								value: 0,
+								title: 'Вес'
+							}
+						}
+					}
+				};
 			}
 		}
 	}

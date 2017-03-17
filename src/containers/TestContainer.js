@@ -22,7 +22,8 @@ class TestContainer extends Component {
 
 function mapStateToProps(state) {
 	const { selectedTestTab } = state.app;
-	return { ...state.test, selectedTestTab };
+	const { data, isFetching } = state.test;
+	return { ...data, isFetching, selectedTestTab };
 }
 
 export default connect(mapStateToProps, actionCreators)(TestContainer);

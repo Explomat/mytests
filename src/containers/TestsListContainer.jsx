@@ -128,12 +128,14 @@ class TestsListContainer extends Component {
 }
 
 function mapStateToProps(state) {
-	const { tests } = state.testsData;
-	
+	const { tests } = state.testsData.data;
+	const { isFetching, isFetchingScroll } = state.testsData;
 	return {
 		curCount: tests.length,
 		allCount: state.testsData.count,
-		...state.testsData
+		isFetching,
+		isFetchingScroll,
+		...state.testsData.data
 	};
 }
 

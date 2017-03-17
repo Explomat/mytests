@@ -18,7 +18,7 @@ class MultipleChoiceAnswer extends Component {
 	
 	handleChangeField(key, value){
 		const { id } = this.props;
-		this.props.onChangeFiled(id, key, value);
+		this.props.changeAnswerField(id, key, value);
 	}
 	
 	render(){

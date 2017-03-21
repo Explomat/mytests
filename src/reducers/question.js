@@ -1,5 +1,6 @@
 import changeField from './utils/changeField';
 import constants from '../constants';
+import questionTypes from './utils/questionTypes';
 import assign from 'lodash/assign';
 import findIndex from 'lodash/findIndex';
 
@@ -32,7 +33,7 @@ export default function question(state = {
 		case constants.TESTS_CHANGE_TEST_QUESTION_TYPE:{
 			const { answers } = state.data;
 			const newState = changeField(state.data, 'type', action.payload);
-			if (action.payload === 'multiple_choice') {
+			if (action.payload === questionTypes.multiple_choice) {
 				return {
 					...state,
 					data: {

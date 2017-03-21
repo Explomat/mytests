@@ -1,34 +1,6 @@
 import constants from '../constants';
-import assign from 'lodash/assign';
-import concat from 'lodash/concat';
 
 const defaultStates = [ { payload: 'all', text: 'Все вакансии' } ];
-
-function isFetchingTests(state = false, action){
-	const { type } = action;
-	
-	if (type === constants.TESTS_GET_TESTS){
-		return true;
-	}
-	return false;
-}
-
-function receiveTests(state = [], action){
-	const { type } = action;
-	if (type === constants.TESTS_GET_TESTS_SUCCESS){
-		return state.concat([], action.tests);
-	}
-	return state;
-}
-
-function isFetchingTestsScroll(state = false, action){
-	const { type } = action;
-	
-	if (type === constants.TESTS_GET_TESTS_ON_SCROLL){
-		return true;
-	}
-	return false;
-}
 
 function receiveTestsOnScroll(state = [], action){
 	const { type } = action;
@@ -53,32 +25,42 @@ export default function testsData(state = {
 }, action) {
 	switch (action.type) {
 		case constants.TESTS_GET_TESTS:
+			return {
+				...state,
+				isFetching: true
+			};
 		case constants.TESTS_GET_TESTS_SUCCESS: {
 			const { data } = action.response;
 			return {
 				...state,
 				data: {
+					...state.data,
 					...data,
-					tests: state.concat([], data.tests),
 					statusFilter: {
-						states: concat(defaultStates, action.states || []),
+						states: defaultStates.concat(action.states || []),
 						selected: action.state_id || 'all'
 					}
 				},
-				isFetching: isFetchingTests(state.isFetching, action)
+				isFetching: false
 			};
 		}
 		
 		case constants.TESTS_GET_TESTS_ON_SCROLL:
+			return {
+				...state,
+				isFetchingScroll: true
+			};
 		case constants.TESTS_GET_TESTS_ON_SCROLL_SUCCESS: {
 			const { tests } = state.data;
-			return assign({}, state, {
+			return {
+				...state,
 				data: {
+					...state.data,
 					tests: receiveTestsOnScroll(tests, action),
 					page: action.page
 				},
-				isFetchingScroll: isFetchingTestsScroll(state.isFetchingScroll, action)
-			});
+				isFetchingScroll: false
+			};
 		}
 
 		default:

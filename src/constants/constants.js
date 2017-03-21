@@ -26,7 +26,9 @@ const constants = keyMirror({
 	'TESTS_REMOVE_ANSWER': null,
 	'TESTS_MOVE_UP_ANSWER': null,
 	'TESTS_MOVE_DOWN_ANSWER': null,
-	'TESTS_CHANGE_ANSWER_FIELD': null
+	'TESTS_CHANGE_ANSWER_FIELD': null,
+	'TESTS_ADD_NEW_SECTION': null,
+	'TESTS_ADD_NEW_QUESTION': null
 });
 
 export default merge(remoteConstants, constants);

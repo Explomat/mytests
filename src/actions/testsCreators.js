@@ -9,6 +9,7 @@ import {
 	getMockQuestions,
 	saveMockQuestion
 } from './mock';
+import findIndex from 'lodash/findIndex';
 
 export function getTest(testId){
 	return (dispatch, getState) => {
@@ -214,6 +215,48 @@ export function moveDownAnswer(answerId){
 	};
 }
 
+export function addNewSection(testId){
+	return (dispatch, getState) => {
+		dispatch({
+			type: constants.TESTS_ADD_NEW_SECTION,
+			testId
+		});
+		const test = getState().test;
+		const section = test.data.sections[test.data.sections.length - 1];
+		
+		dispatch({
+			type: constants.TESTS_TOGGLE_OPEN_SECTION,
+			sectionId: section.id
+		});
+		
+		const state = getState();
+		const { sections } = state.test.data;
+		dispatch({
+			type: constants.APP_CHANGE_OPENED_TEST_SECTIONS,
+			sections
+		});
+	};
+}
+
+export function addNewQuestion(sectionId){
+	return (dispatch, getState) => {
+		dispatch({
+			type: constants.TESTS_ADD_NEW_QUESTION,
+			sectionId
+		});
+		const { test } = getState();
+		const { sections } = test.data;
+		const sectionIndex = findIndex(sections, s => s.id === sectionId);
+		if (sectionIndex !== -1){
+			const questions = sections[sectionIndex].questions;
+			const question = questions[questions.length - 1];
+			if (question){
+				window.location.href = `#/tests/${test.data.id}/${sectionId}/${question.id}`;
+			}
+		}
+	};
+}
+
 export function addNewAnswer(){
 	return {
 		type: constants.TESTS_ADD_NEW_ANSWER
@@ -229,11 +272,10 @@ export function addNewAnswer(){
 	};*/
 }
 
-export function toggleOpenSection(testId, sectionId){
+export function toggleOpenSection(sectionId){
 	return (dispatch, getState) => {
 		dispatch({
 			type: constants.TESTS_TOGGLE_OPEN_SECTION,
-			testId,
 			sectionId
 		});
 		

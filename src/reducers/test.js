@@ -1,6 +1,7 @@
 import changeField from './utils/changeField';
 import constants from '../constants';
 import assign from 'lodash/assign';
+import findIndex from 'lodash/findIndex';
 
 function isFetchingTest(state = false, action){
 	const { type } = action;
@@ -40,11 +41,52 @@ export default function test(state = {
 		case constants.TESTS_GET_TEST:
 		case constants.TESTS_GET_TEST_SUCCESS:
 			return assign({}, state, action.response, { isFetching: isFetchingTest(state.isFetching, action) });
-			
+		
+		case constants.TESTS_ADD_NEW_QUESTION: {
+			const { sections } = state.data;
+			const sectionIndex = findIndex(sections, s => s.id === action.sectionId);
+			if (sectionIndex !== -1){
+				const section = sections[sectionIndex];
+				section.questions.push({
+					...state.templates.question,
+					id: section.questions.length,
+					is_new: true
+				});
+				return {
+					...state,
+					data: {
+						...state.data,
+						sections: sections.map(s => s)
+					}
+				};
+			}
+			return state;
+		}
 		case constants.TESTS_CHANGE_TEST_FIELD: {
 			return {
 				...state,
 				data: changeField(state.data, action.key, action.value)
+			};
+		}
+		
+		case constants.TESTS_ADD_NEW_SECTION: {
+			const { sections } = state.data;
+			const { title } = state.templates.section;
+			const sec = {
+				...state.templates.section,
+				id: sections.length,
+				title: {
+					...title,
+					value: `Section № ${sections.length}`
+				},
+				is_new: true
+			};
+			return {
+				...state,
+				data: {
+					...state.data,
+					sections: sections.concat([ sec ])
+				}
 			};
 		}
 		

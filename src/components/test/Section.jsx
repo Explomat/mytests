@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ShortQuestion from './ShortQuestion';
 import { TextView } from '../modules/text-label';
+import { ButtonPrimary } from '../modules/button';
 import DropDown from '../modules/dropdown';
 import numDeclension from '../../utils/numDeclension';
 import cx from 'classnames';
@@ -11,16 +12,23 @@ class Section extends Component {
 		super(props);
 		
 		this.handleOpenSection = this.handleOpenSection.bind(this);
+		this.handleChangeField = this.handleChangeField.bind(this);
+		this.handleAddNewQuestion = this.handleAddNewQuestion.bind(this);
 	}
 	
 	handleOpenSection(){
-		const { testId, id } = this.props;
-		this.props.toggleOpenSection(testId, id);
+		const { id } = this.props;
+		this.props.toggleOpenSection(id);
 	}
 	
 	handleChangeField(key, value){
-		const { id, changeTestFieldInSection } = this.props;
-		changeTestFieldInSection(id, key, value);
+		const { id } = this.props;
+		this.props.changeTestFieldInSection(id, key, value);
+	}
+	
+	handleAddNewQuestion(){
+		const { id } = this.props;
+		this.props.addNewQuestion(id);
 	}
 	
 	render(){
@@ -47,6 +55,7 @@ class Section extends Component {
 					</div>
 					{isOpen && <div className='section__additional'>
 						<div className='section__menu'>
+							<ButtonPrimary text='Добавить вопрос' onClick={this.handleAddNewQuestion}/>
 							<TextView
 								value={title.value}
 								placeholder={title.title}

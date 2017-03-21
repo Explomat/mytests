@@ -2,22 +2,6 @@ import constants from '../constants';
 import { setSuccess, setFailure } from './utils/setState';
 import assign from 'lodash/assign';
 
-function isError(state = null, action) {
-	const { errorMessage } = action;
-	if (errorMessage) {
-		return action.errorMessage;
-	}
-	return null;
-}
-
-function isInfo(state = null, action) {
-	const { infoMessage } = action;
-	if (infoMessage) {
-		return action.infoMessage;
-	}
-	return null;
-}
-
 export default function app(state = {
 	title: 'Тесты',
 	access: false,
@@ -36,9 +20,9 @@ export default function app(state = {
 			return setSuccess(state, action.response, 'error', 'isFetching');
 			
 		case constants.APP_ERROR_MESSAGE:
-			return assign({}, state, { isFetching: false, errorMessage: isError(state.errorMessage, action) });
+			return assign({}, state, { isFetching: false, errorMessage: action.errorMessage });
 		case constants.APP_INFO_MESSAGE:
-			return assign({}, state, { isFetching: false, infoMessage: isInfo(state.infoMessage, action) });
+			return assign({}, state, { isFetching: false, infoMessage: action.infoMessage });
 		case constants.APP_CHANGE_TITLE:
 			return assign({}, state, { title: action.title });
 		

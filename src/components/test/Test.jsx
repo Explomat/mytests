@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextView } from '../modules/text-label';
+import { ButtonPrimary } from '../modules/button';
 import InputNumber from '../modules/input-number';
 import DropDown from '../modules/dropdown';
 import Checkbox from '../modules/checkbox';
@@ -13,6 +14,7 @@ class Test extends Component {
 		this._renderSettings = this._renderSettings.bind(this);
 		this._renderSections = this._renderSections.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
+		this.handleAddNewSection = this.handleAddNewSection.bind(this);
 		this.tabs = {
 			settings: this._renderSettings,
 			sections: this._renderSections
@@ -21,6 +23,11 @@ class Test extends Component {
 	
 	handleChangeField(key, value){
 		this.props.changeTestField(key, value);
+	}
+	
+	handleAddNewSection(){
+		const { id } = this.props;
+		this.props.addNewSection(id);
 	}
 	
 	_renderSettings(){
@@ -167,6 +174,7 @@ class Test extends Component {
 			<div className='test col-sm-5 col-md-4 col-lg-3'>
 				<button type='button' onClick={() => this.props.changeTestTab('settings')}>Общие настройки</button>
 				<button type='button' onClick={() => this.props.changeTestTab('sections')}>Разделы</button>
+				{selectedTestTab === 'sections' && <ButtonPrimary text='Добавить раздел' onClick={this.handleAddNewSection} />}
 				{this.tabs[selectedTestTab]()}
 			</div>
 		);

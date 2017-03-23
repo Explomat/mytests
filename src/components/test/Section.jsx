@@ -33,8 +33,8 @@ class Section extends Component {
 	}
 	
 	handleAddNewQuestion(){
-		const { id } = this.props;
-		this.props.addNewQuestion(id);
+		const { testId, id } = this.props;
+		this.props.addNewQuestion(testId, id);
 	}
 	
 	render(){
@@ -76,7 +76,7 @@ class Section extends Component {
 							<ButtonPrimary text='Добавить вопрос' onClick={this.handleAddNewQuestion}/>
 						</div>
 						<div className='short-questions'>
-							{questions.map(q => <ShortQuestion key={q.id} link={`#tests/${testId}/${id}/${q.id}`} {...q} />)}
+							{questions.map(q => <ShortQuestion key={q.id} link={`#question/${testId}/${id}/${q.id}`} {...q} />)}
 						</div>
 					</div>}
 				</div>

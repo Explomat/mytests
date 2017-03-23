@@ -11,6 +11,7 @@ import AppContainer from './containers/AppContainer';
 import TestsListContainer from './containers/TestsListContainer';
 import TestContainer from './containers/TestContainer';
 import QuestionContainer from './containers/QuestionContainer';
+import NewQuestionContainer from './containers/NewQuestionContainer';
 import { dom } from './config';
 
 import 'classlist-polyfill';
@@ -24,13 +25,26 @@ const store = createStore(
 
 store.dispatch(getAccess());
 
+function log(str) {
+	console.log(str);
+}
+
 ReactDOM.render(
 	<Provider store={store}>
 		<Router history={hashHistory}>
 			<Route path='/' component={AppContainer}>
 				<IndexRoute component={TestsListContainer} />
 				<Route path='/tests/:testId' component={TestContainer} />
-				<Route path='/tests/:testId/:sectionId/:questionId' component={QuestionContainer} />
+				<Route
+					onEnter={log.bind(null, '/question/:testId/:sectionId/:questionId')}
+					path='/question/:testId/:sectionId/:questionId'
+					component={QuestionContainer}
+				/>
+				<Router
+					onEnter={log.bind(null, '/question/new/:testId/:sectionId')}
+					path='/questions/new/:testId/:sectionId'
+					component={NewQuestionContainer}
+				/>
 			</Route>
 		</Router>
 	</Provider>,

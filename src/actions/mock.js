@@ -531,36 +531,76 @@ export function getMockQuestions(testId){
 	return [];
 }
 
-export function addMockNewQuestion(testId, sectionId){
-	const test = tests.filter(t => t.id.toString() === testId.toString())[0];
-	if (test) {
-		const section = test.sections.filter(s => s.id.toString() === sectionId.toString())[0];
-		if (section){
-			const id = section.questions.length + 1;
-			const question = {
-				id,
-				title: {
+export function getMockQuestionTemplate(){
+	return {
+		data: {
+			id: null,
+			title: {
+				type: 'string',
+				value: '',
+				title: 'Название вопроса'
+			},
+			type: {
+				type: 'select',
+				selected: questionTypes[0].payload,
+				title: 'Тип',
+				values: questionTypes
+			},
+			question_points: { // Баллы
+				type: 'real',
+				value: 0,
+				title: 'Баллы'
+			},
+			answers: []
+		},
+		templates: {
+			answer: {
+				id: null,
+				text: {
 					type: 'string',
-					value: `Question № ${id}`,
-					title: 'Название вопроса'
+					value: '',
+					title: 'Ответ'
 				},
-				type: {
-					type: 'select',
-					selected: questionTypes[0].payload,
-					title: 'Тип',
-					values: questionTypes
+				is_correct_answer: {
+					type: 'bool',
+					value: false,
+					title: 'Правильный ответ'
 				},
-				question_points: { // Баллы
-					type: 'real',
+				condition: {
+					value: {
+						type: 'string',
+						value: '',
+						title: null
+					},
+					case_sensitive: {
+						type: 'bool',
+						value: false,
+						title: 'Зависит от регистра'
+					},
+					grading_option_id: {
+						type: 'select',
+						selected: conditionGradingOptions[0].payload,
+						values: conditionGradingOptions
+					},
+					sentence_option_id: {
+						type: 'select',
+						selected: conditionSentenceOption[0].payload,
+						values: conditionSentenceOption
+					}
+				},
+				value: { // Соответствие
+					type: 'string',
+					value: '',
+					title: 'Соответствующий элемент'
+				},
+				ws_score: { // Вес
+					type: 'string',
 					value: 0,
-					title: 'Баллы'
-				},
-				answers: []
-			};
-			section.questions.push(question);
-			return question;
+					title: 'Вес'
+				}
+			}
 		}
-	}
+	};
 }
 
 export function editMockTest(testId, test){

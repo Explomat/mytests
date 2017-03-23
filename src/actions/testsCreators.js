@@ -9,7 +9,7 @@ import {
 	getMockQuestion,
 	getMockQuestions,
 	saveMockQuestion,
-	addMockNewQuestion
+	getMockQuestionTemplate
 } from './mock';
 
 export function getTest(testId){
@@ -263,28 +263,20 @@ export function addNewSection(testId){
 	};
 }
 
-export function addNewQuestion(sectionId){
-	return (dispatch, getState) => {
-		const { test } = getState();
+export function addNewQuestion(testId, sectionId){
+	return dispatch => {
+		dispatch({
+			type: constants.TESTS_ADD_NEW_QUESTION
+		});
+		
 		setTimeout(() => {
-			const question = addMockNewQuestion(test.data.id, sectionId);
+			const question = getMockQuestionTemplate();
 			dispatch({
 				type: constants.TESTS_ADD_NEW_QUESTION_SUCCESS,
 				question
 			});
-			window.location.href = `#/tests/${test.data.id}/${sectionId}/${question.id}`;
+			window.location.href = `#questions/new/${testId}/${sectionId}`;
 		}, 300);
-		
-		/* const { test } = getState();
-		const { sections } = test.data;
-		const sectionIndex = findIndex(sections, s => s.id === sectionId);
-		if (sectionIndex !== -1){
-			const questions = sections[sectionIndex].questions;
-			const question = questions[questions.length - 1];
-			if (question){
-				window.location.href = `#/tests/${test.data.id}/${sectionId}/${question.id}`;
-			}
-		}*/
 	};
 }
 
@@ -292,15 +284,6 @@ export function addNewAnswer(){
 	return {
 		type: constants.TESTS_ADD_NEW_ANSWER
 	};
-	/* return dispatch => {
-		setTimeout(() => {
-			const answer = addMockNewAnswer();
-			dispatch({
-				type: constants.TESTS_ADD_NEW_ANSWER_SUCCESS,
-				answer
-			});
-		}, 300);
-	};*/
 }
 
 export function toggleOpenSection(sectionId){

@@ -3,6 +3,7 @@ import constants from '../constants';
 import questionTypes from './utils/questionTypes';
 import assign from 'lodash/assign';
 import findIndex from 'lodash/findIndex';
+import uuid from '../utils/uuid';
 
 function isFetchingQuestion(state = false, action){
 	const { type } = action;
@@ -28,12 +29,24 @@ export default function question(state = {
 		case constants.TESTS_GET_TEST_QUESTION:
 		case constants.TESTS_GET_TEST_QUESTION_SUCCESS:
 			return assign({}, state, action.response, { isFetching: isFetchingQuestion(state.isFetching, action) });
-			
-		case constants.TESTS_ADD_NEW_QUESTION_SUCCESS: {
+		
+		case constants.TESTS_ADD_NEW_QUESTION:
 			return {
-				...action.question,
+				...state,
 				isFetching: true
 			};
+		case constants.TESTS_ADD_NEW_QUESTION_SUCCESS: {
+			const { data, templates } = action.question;
+			const st = {
+				data: {
+					...data,
+					id: uuid(),
+					is_new: true
+				},
+				templates,
+				isFetching: false
+			};
+			return st;
 		}
 		case constants.TESTS_CHANGE_QUESTION_FIELD:
 			return assign({}, state, { data: changeField(state.data, action.key, action.value) });

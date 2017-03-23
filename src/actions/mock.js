@@ -81,7 +81,88 @@ function filterTests(tests, search, page, order){
 	};
 }
 
-function mockTests(){
+const MAX_QUESTIONS_COUNT = 100;
+
+function mockQuestions(){
+	const questions = [];
+	for (let k = 0; k < MAX_QUESTIONS_COUNT; k++){
+		const question = {
+			id: k,
+			title: {
+				type: 'string',
+				value: `Question № ${k + 1}`,
+				title: 'Название вопроса'
+			},
+			type: {
+				type: 'select',
+				selected: getRandomState(questionTypes),
+				title: 'Тип',
+				values: questionTypes
+			},
+			question_points: { // Баллы
+				type: 'real',
+				value: getRandomArbitrary(1, 10),
+				title: 'Баллы'
+			}
+		};
+		questions.push(question);
+		
+		const MAX_ANSWERS_COUNT = getRandomArbitrary(1, 7);
+		const answers = [];
+		for (let p = 0; p < MAX_ANSWERS_COUNT; p++){
+			const answer = {
+				id: p,
+				text: {
+					type: 'string',
+					value: `Answer № ${p + 1}`,
+					title: 'Ответ'
+				},
+				is_correct_answer: {
+					type: 'bool',
+					value: getRandomArbitrary(0, 2),
+					title: 'Правильный ответ'
+				},
+				condition: {
+					value: {
+						type: 'string',
+						value: '',
+						title: null
+					},
+					case_sensitive: {
+						type: 'bool',
+						value: false,
+						title: 'Зависит от регистра'
+					},
+					grading_option_id: {
+						type: 'select',
+						selected: getRandomState(conditionGradingOptions),
+						values: conditionGradingOptions
+					},
+					sentence_option_id: {
+						type: 'select',
+						selected: getRandomState(conditionSentenceOption),
+						values: conditionSentenceOption
+					}
+				},
+				value: { // Соответствие
+					type: 'string',
+					value: '',
+					title: 'Соответствующий элемент'
+				},
+				ws_score: { // Вес
+					type: 'string',
+					value: getRandomArbitrary(1, 5),
+					title: 'Вес'
+				}
+			};
+			answers.push(answer);
+			question.answers = answers;
+		}
+	}
+	return questions;
+}
+
+function mockTests(questions){
 	const MAX_TESTS_COUNT = getRandomArbitrary(1, 31);
 
 	const tests = [];
@@ -178,7 +259,7 @@ function mockTests(){
 		tests.push(test);
 		
 		const MAX_SECTIONS_COUNT = getRandomArbitrary(1, 5);
-		const sections = [];
+		test.sections = [];
 		for (let j = 0; j < MAX_SECTIONS_COUNT; j++){
 			const section = {
 				id: j,
@@ -194,92 +275,25 @@ function mockTests(){
 					values: sectionOrders
 				}
 			};
-			sections.push(section);
-			test.sections = sections;
+			test.sections.push(section);
 			
-			const MAX_QUESTIONS_COUNT = getRandomArbitrary(1, 6);
-			const questions = [];
-			for (let k = 0; k < MAX_QUESTIONS_COUNT; k++){
-				const question = {
-					id: k,
-					title: {
-						type: 'string',
-						value: `Question № ${k + 1}`,
-						title: 'Название вопроса'
-					},
-					type: {
-						type: 'select',
-						selected: getRandomState(questionTypes),
-						title: 'Тип',
-						values: questionTypes
-					},
-					question_points: { // Баллы
-						type: 'real',
-						value: getRandomArbitrary(1, 10),
-						title: 'Баллы'
-					}
-				};
-				questions.push(question);
-				section.questions = questions;
-				
-				const MAX_ANSWERS_COUNT = getRandomArbitrary(1, 7);
-				const answers = [];
-				for (let p = 0; p < MAX_ANSWERS_COUNT; p++){
-					const answer = {
-						id: p,
-						text: {
-							type: 'string',
-							value: `Answer № ${p + 1}`,
-							title: 'Ответ'
-						},
-						is_correct_answer: {
-							type: 'bool',
-							value: getRandomArbitrary(0, 2),
-							title: 'Правильный ответ'
-						},
-						condition: {
-							value: {
-								type: 'string',
-								value: '',
-								title: null
-							},
-							case_sensitive: {
-								type: 'bool',
-								value: false,
-								title: 'Зависит от регистра'
-							},
-							grading_option_id: {
-								type: 'select',
-								selected: getRandomState(conditionGradingOptions),
-								values: conditionGradingOptions
-							},
-							sentence_option_id: {
-								type: 'select',
-								selected: getRandomState(conditionSentenceOption),
-								values: conditionSentenceOption
-							}
-						},
-						value: { // Соответствие
-							type: 'string',
-							value: '',
-							title: 'Соответствующий элемент'
-						},
-						ws_score: { // Вес
-							type: 'string',
-							value: getRandomArbitrary(1, 5),
-							title: 'Вес'
-						}
-					};
-					answers.push(answer);
-					question.answers = answers;
-				}
+			section.questions = [];
+			const questionsCount = getRandomArbitrary(1, 3);
+			for (let k = 0; k < questionsCount; k++){
+				const qIdx = getRandomArbitrary(0, MAX_QUESTIONS_COUNT);
+				const question = questions[qIdx];
+				section.questions.push({
+					id: question.id,
+					title: question.title
+				});
 			}
 		}
 	}
 	return tests;
 }
 
-const tests = mockTests();
+const questions = mockQuestions();
+const tests = mockTests(questions);
 
 export function getMockTests(search, page, order){
 	const data = filterTests(tests, search, page, order);
@@ -447,7 +461,8 @@ export function getMockQuestion(testId, sectionId, questionId){
 	if (test){
 		const section = test.sections.filter(s => s.id.toString() === sectionId.toString())[0];
 		if (section){
-			const question = section.questions.filter(q => q.id.toString() === questionId.toString())[0];
+			const shortQuestion = section.questions.filter(q => q.id.toString() === questionId.toString())[0];
+			const question = shortQuestion && questions[shortQuestion.id];
 			if (question){
 				return {
 					data: question,
@@ -508,6 +523,8 @@ export function getMockQuestion(testId, sectionId, questionId){
 }
 
 export function saveMockQuestion(testId, sectionId, questionId, question) {
+	questions[questionId] = question;
+	
 	const test = tests.filter(t => t.id.toString() === testId.toString())[0];
 	if (test){
 		const section = test.sections.filter(s => s.id.toString() === sectionId.toString())[0];
@@ -515,9 +532,15 @@ export function saveMockQuestion(testId, sectionId, questionId, question) {
 			const qId = (questionId === null || questionId === undefined) ? -1 : questionId;
 			const questionIdx = findIndex(section.questions, q => q.id.toString() === qId.toString());
 			if (questionIdx === -1) {
-				section.questions.push(question);
+				section.questions.push({
+					id: questionId,
+					title: question.title
+				});
 			} else {
-				section.questions[questionIdx] = question;
+				section.questions[questionIdx] = {
+					id: questionId,
+					title: question.title
+				};
 			}
 		}
 	}

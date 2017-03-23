@@ -12,6 +12,7 @@ class Section extends Component {
 		super(props);
 		
 		this.handleOpenSection = this.handleOpenSection.bind(this);
+		this.handleRemoveSection = this.handleRemoveSection.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
 		this.handleAddNewQuestion = this.handleAddNewQuestion.bind(this);
 	}
@@ -19,6 +20,11 @@ class Section extends Component {
 	handleOpenSection(){
 		const { id } = this.props;
 		this.props.toggleOpenSection(id);
+	}
+	
+	handleRemoveSection(){
+		const { id } = this.props;
+		this.props.removeSection(id);
 	}
 	
 	handleChangeField(key, value){
@@ -54,8 +60,8 @@ class Section extends Component {
 						<span className={caretClasses} />
 					</div>
 					{isOpen && <div className='section__additional'>
+						<ButtonPrimary text='Удалить' onClick={this.handleRemoveSection}/>
 						<div className='section__menu'>
-							<ButtonPrimary text='Добавить вопрос' onClick={this.handleAddNewQuestion}/>
 							<TextView
 								value={title.value}
 								placeholder={title.title}
@@ -67,6 +73,7 @@ class Section extends Component {
 								title={order.title}
 								onChange={(e, val) => this.handleChangeField('order', val)}
 							/>
+							<ButtonPrimary text='Добавить вопрос' onClick={this.handleAddNewQuestion}/>
 						</div>
 						<div className='short-questions'>
 							{questions.map(q => <ShortQuestion key={q.id} link={`#tests/${testId}/${id}/${q.id}`} {...q} />)}

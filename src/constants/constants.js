@@ -4,10 +4,12 @@ import merge from 'lodash/merge';
 
 const remoteConstants = createRemoteActions([
 	'APP_GET_ACCESS',
+	'TESTS_SAVE_TEST',
 	'TESTS_GET_TESTS',
 	'TESTS_GET_TESTS_ON_SCROLL',
 	'TESTS_GET_TEST',
-	'TESTS_GET_TEST_QUESTION'
+	'TESTS_GET_TEST_QUESTION',
+	'TESTS_ADD_NEW_QUESTION'
 ]);
 
 const constants = keyMirror({
@@ -28,7 +30,7 @@ const constants = keyMirror({
 	'TESTS_MOVE_DOWN_ANSWER': null,
 	'TESTS_CHANGE_ANSWER_FIELD': null,
 	'TESTS_ADD_NEW_SECTION': null,
-	'TESTS_ADD_NEW_QUESTION': null
+	'TESTS_REMOVE_SECTION': null
 });
 
 export default merge(remoteConstants, constants);

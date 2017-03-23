@@ -3,13 +3,14 @@ import { url } from '../config';*/
 import constants from '../constants';
 import { info } from './appCreators';
 import {
-	mockGetTests,
+	saveMockTest,
+	getMockTests,
 	getMockTest,
 	getMockQuestion,
 	getMockQuestions,
-	saveMockQuestion
+	saveMockQuestion,
+	addMockNewQuestion
 } from './mock';
-import findIndex from 'lodash/findIndex';
 
 export function getTest(testId){
 	return (dispatch, getState) => {
@@ -76,13 +77,30 @@ export function getTest(testId){
 	};
 }
 
+export function saveTest(testId){
+	return (dispatch, getState) => {
+		dispatch({
+			type: constants.TESTS_SAVE_TEST
+		});
+		
+		setTimeout(() => {
+			const test = getState().test;
+			saveMockTest(testId, test);
+			dispatch(info('Тест сохранен.'));
+			dispatch({
+				type: constants.TESTS_SAVE_TEST_SUCCESS
+			});
+		}, 300);
+	};
+}
+
 export function getTests(search, page, order){
 	return dispatch => {
 		dispatch({ type: constants.APP_CHANGE_TITLE, title: 'Тесты' });
 		dispatch({ type: constants.TESTS_GET_TESTS });
 		
 		setTimeout(() => {
-			const data = mockGetTests(search, page, order);
+			const data = getMockTests(search, page, order);
 			dispatch({
 				type: constants.TESTS_GET_TESTS_SUCCESS,
 				response: {
@@ -127,7 +145,7 @@ export function getTestsOnScroll(search, page, order){
 		dispatch({ type: constants.TESTS_GET_TESTS_ON_SCROLL });
 		
 		setTimeout(() => {
-			const data = mockGetTests(search, page, order);
+			const data = getMockTests(search, page, order);
 			dispatch({
 				type: constants.TESTS_GET_TESTS_ON_SCROLL_SUCCESS,
 				page,
@@ -173,7 +191,7 @@ export function getQuestion(testId, sectionId, questionId){
 				type: constants.TESTS_GET_TEST_QUESTION_SUCCESS,
 				response: data
 			});
-		});
+		}, 300);
 	};
 }
 
@@ -185,7 +203,7 @@ export function saveQuestion(testId, sectionId, questionId){
 		setTimeout(() => {
 			saveMockQuestion(testId, sectionId, questionId, state.question.data);
 			dispatch(info('Вопрос сохранен в базу.'));
-		});
+		}, 300);
 	};
 }
 
@@ -215,6 +233,13 @@ export function moveDownAnswer(answerId){
 	};
 }
 
+export function removeSection(sectionId){
+	return {
+		type: constants.TESTS_REMOVE_SECTION,
+		sectionId
+	};
+}
+
 export function addNewSection(testId){
 	return (dispatch, getState) => {
 		dispatch({
@@ -240,11 +265,17 @@ export function addNewSection(testId){
 
 export function addNewQuestion(sectionId){
 	return (dispatch, getState) => {
-		dispatch({
-			type: constants.TESTS_ADD_NEW_QUESTION,
-			sectionId
-		});
 		const { test } = getState();
+		setTimeout(() => {
+			const question = addMockNewQuestion(test.data.id, sectionId);
+			dispatch({
+				type: constants.TESTS_ADD_NEW_QUESTION_SUCCESS,
+				question
+			});
+			window.location.href = `#/tests/${test.data.id}/${sectionId}/${question.id}`;
+		}, 300);
+		
+		/* const { test } = getState();
 		const { sections } = test.data;
 		const sectionIndex = findIndex(sections, s => s.id === sectionId);
 		if (sectionIndex !== -1){
@@ -253,7 +284,7 @@ export function addNewQuestion(sectionId){
 			if (question){
 				window.location.href = `#/tests/${test.data.id}/${sectionId}/${question.id}`;
 			}
-		}
+		}*/
 	};
 }
 

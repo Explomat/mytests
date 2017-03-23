@@ -28,6 +28,13 @@ export default function question(state = {
 		case constants.TESTS_GET_TEST_QUESTION:
 		case constants.TESTS_GET_TEST_QUESTION_SUCCESS:
 			return assign({}, state, action.response, { isFetching: isFetchingQuestion(state.isFetching, action) });
+			
+		case constants.TESTS_ADD_NEW_QUESTION_SUCCESS: {
+			return {
+				...action.question,
+				isFetching: true
+			};
+		}
 		case constants.TESTS_CHANGE_QUESTION_FIELD:
 			return assign({}, state, { data: changeField(state.data, action.key, action.value) });
 		case constants.TESTS_CHANGE_TEST_QUESTION_TYPE:{

@@ -1,7 +1,7 @@
 // import numberToWords from 'number-to-words';
 import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
-import uuid from '../utils/uuid';
+// import uuid from '../utils/uuid';
 // import indexOf from 'lodash/indexOf';
 
 const limitRows = 15;
@@ -281,7 +281,7 @@ function mockTests(){
 
 const tests = mockTests();
 
-export function mockGetTests(search, page, order){
+export function getMockTests(search, page, order){
 	const data = filterTests(tests, search, page, order);
 	const _tests = data.tests.map(t => {
 		return {
@@ -390,46 +390,56 @@ export function mockGetTests(search, page, order){
 }
 
 export function getMockTest(testId){
-	return {
-		data: tests.filter(t => t.id.toString() === testId.toString())[0],
-		templates: {
-			section: {
-				id: null,
-				title: {
-					type: 'string',
-					value: '',
-					title: 'Название раздела'
+	const test = tests.filter(t => t.id.toString() === testId.toString())[0];
+	if (test){
+		return {
+			data: { ...test },
+			templates: {
+				section: {
+					id: null,
+					title: {
+						type: 'string',
+						value: '',
+						title: 'Название раздела'
+					},
+					order: {
+						type: 'select',
+						selected: sectionOrders[0].payload,
+						title: 'Порядок следования вопросов',
+						values: sectionOrders
+					},
+					questions: []
 				},
-				order: {
-					type: 'select',
-					selected: sectionOrders[0].payload,
-					title: 'Порядок следования вопросов',
-					values: sectionOrders
-				},
-				questions: []
-			},
-			question: {
-				id: null,
-				title: {
-					type: 'string',
-					value: '',
-					title: 'Название вопроса'
-				},
-				type: {
-					type: 'select',
-					selected: questionTypes[0].payload,
-					title: 'Тип',
-					values: questionTypes
-				},
-				question_points: { // Баллы
-					type: 'real',
-					value: 0,
-					title: 'Баллы'
-				},
-				answers: []
+				question: {
+					id: null,
+					title: {
+						type: 'string',
+						value: '',
+						title: 'Название вопроса'
+					},
+					type: {
+						type: 'select',
+						selected: questionTypes[0].payload,
+						title: 'Тип',
+						values: questionTypes
+					},
+					question_points: { // Баллы
+						type: 'real',
+						value: 0,
+						title: 'Баллы'
+					},
+					answers: []
+				}
 			}
-		}
-	};
+		};
+	}
+}
+
+export function saveMockTest(testId, test){
+	const testIndex = findIndex(tests, t => t.id.toString() === testId.toString());
+	if (testIndex !== -1){
+		tests[testIndex] = test.data;
+	}
 }
 
 export function getMockQuestion(testId, sectionId, questionId){
@@ -521,53 +531,36 @@ export function getMockQuestions(testId){
 	return [];
 }
 
-export function addMockNewAnswer(){
-	return {
-		id: uuid(),
-		is_new: true,
-		text: {
-			type: 'string',
-			value: '',
-			title: 'Ответ'
-		},
-		is_correct_answer: {
-			type: 'bool',
-			value: false,
-			title: 'Правильный ответ'
-		},
-		condition: {
-			value: {
-				type: 'string',
-				value: '',
-				title: null
-			},
-			case_sensitive: {
-				type: 'bool',
-				value: false,
-				title: 'Зависит от регистра'
-			},
-			grading_option_id: {
-				type: 'select',
-				selected: conditionGradingOptions[0].payload,
-				values: conditionGradingOptions
-			},
-			sentence_option_id: {
-				type: 'select',
-				selected: conditionSentenceOption[0].payload,
-				values: conditionSentenceOption
-			}
-		},
-		value: { // Соответствие
-			type: 'string',
-			value: '',
-			title: 'Соответствующий элемент'
-		},
-		ws_score: { // Вес
-			type: 'string',
-			value: '',
-			title: 'Вес'
+export function addMockNewQuestion(testId, sectionId){
+	const test = tests.filter(t => t.id.toString() === testId.toString())[0];
+	if (test) {
+		const section = test.sections.filter(s => s.id.toString() === sectionId.toString())[0];
+		if (section){
+			const id = section.questions.length + 1;
+			const question = {
+				id,
+				title: {
+					type: 'string',
+					value: `Question № ${id}`,
+					title: 'Название вопроса'
+				},
+				type: {
+					type: 'select',
+					selected: questionTypes[0].payload,
+					title: 'Тип',
+					values: questionTypes
+				},
+				question_points: { // Баллы
+					type: 'real',
+					value: 0,
+					title: 'Баллы'
+				},
+				answers: []
+			};
+			section.questions.push(question);
+			return question;
 		}
-	};
+	}
 }
 
 export function editMockTest(testId, test){

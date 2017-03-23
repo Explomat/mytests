@@ -13,12 +13,18 @@ class Test extends Component {
 		
 		this._renderSettings = this._renderSettings.bind(this);
 		this._renderSections = this._renderSections.bind(this);
+		this.handleSaveTest = this.handleSaveTest.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
 		this.handleAddNewSection = this.handleAddNewSection.bind(this);
 		this.tabs = {
 			settings: this._renderSettings,
 			sections: this._renderSections
 		};
+	}
+	
+	handleSaveTest(){
+		const { id } = this.props;
+		this.props.saveTest(id);
 	}
 	
 	handleChangeField(key, value){
@@ -172,6 +178,7 @@ class Test extends Component {
 		
 		return (
 			<div className='test col-sm-5 col-md-4 col-lg-3'>
+				<ButtonPrimary text='Сохранить' onClick={this.handleSaveTest} />
 				<button type='button' onClick={() => this.props.changeTestTab('settings')}>Общие настройки</button>
 				<button type='button' onClick={() => this.props.changeTestTab('sections')}>Разделы</button>
 				{selectedTestTab === 'sections' && <ButtonPrimary text='Добавить раздел' onClick={this.handleAddNewSection} />}

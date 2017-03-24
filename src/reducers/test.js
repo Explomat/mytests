@@ -1,15 +1,5 @@
 import changeField from './utils/changeField';
 import constants from '../constants';
-import assign from 'lodash/assign';
-
-function isFetchingTest(state = false, action){
-	const { type } = action;
-	
-	if (type === constants.TESTS_GET_TEST){
-		return true;
-	}
-	return false;
-}
 
 export default function test(state = {
 	data: {
@@ -38,8 +28,19 @@ export default function test(state = {
 }, action) {
 	switch (action.type) {
 		case constants.TESTS_GET_TEST:
-		case constants.TESTS_GET_TEST_SUCCESS:
-			return assign({}, state, action.response, { isFetching: isFetchingTest(state.isFetching, action) });
+			return {
+				...state,
+				isFetching: true
+			};
+		case constants.TESTS_GET_TEST_SUCCESS: {
+			const { data } = action.response;
+			return {
+				...state,
+				...action.response,
+				defaultState: data,
+				isFetching: false
+			};
+		}
 		
 		case constants.TESTS_CHANGE_TEST_FIELD: {
 			return {

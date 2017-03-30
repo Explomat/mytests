@@ -13,7 +13,7 @@ class TestContainer extends Component {
 	render(){
 		const { isFetching } = this.props;
 		return (
-			<div className='test-container'>
+			<div className='test-container clearfix'>
 				{isFetching ? <div className='overlay-loading overlay-loading--show' /> : <Test {...this.props}/>}
 			</div>
 		);

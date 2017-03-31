@@ -7,49 +7,19 @@ import Checkbox from '../modules/checkbox';
 import SectionContainer from '../../containers/SectionContainer';
 
 
-function setAsyncRouteLeaveHook(router, route, hook) {
-	let withinHook = false;
-	let finalResult;
-	let finalResultSet = false;
-	router.setRouteLeaveHook(route, nextLocation => {
-		withinHook = true;
-		if (!finalResultSet) {
-			hook(nextLocation).then(result => {
-				finalResult = result;
-				finalResultSet = true;
-				if (!withinHook && nextLocation) {
-					// Re-schedule the navigation
-					router.transitionTo(nextLocation);
-				}
-			});
-		}
-		const result = finalResultSet ? finalResult : false;
-		withinHook = false;
-		finalResult = undefined;
-		finalResultSet = false;
-		return result;
-	});
-}
-
 class Test extends Component {
 	
 	constructor(props){
 		super(props);
 		
-		this._locationHasChanged = this._locationHasChanged.bind(this);
 		this._renderSettings = this._renderSettings.bind(this);
 		this._renderSections = this._renderSections.bind(this);
-		this.handleSaveTest = this.handleSaveTest.bind(this);
 		this.handleChangeField = this.handleChangeField.bind(this);
 		this.handleAddNewSection = this.handleAddNewSection.bind(this);
 		this.tabs = {
 			settings: this._renderSettings,
 			sections: this._renderSections
 		};
-	}
-	
-	componentWillMount() {
-		setAsyncRouteLeaveHook(this.props.router, this.props.route, this._locationHasChanged);
 	}
 	
 	handleSaveTest(){
@@ -64,27 +34,6 @@ class Test extends Component {
 	handleAddNewSection(){
 		const { id } = this.props;
 		this.props.addNewSection(id);
-	}
-	
-	_locationHasChanged(nextLocation){
-		return new Promise((resolve) => {
-			if (nextLocation.pathname !== '/') {
-				// No unsaved changes -- leave
-				resolve(true);
-			} else {
-				if (confirm('Сохранить тест?')) {
-					console.log(nextLocation);
-				} else {
-					console.log(nextLocation);
-				}
-				resolve(true);
-				// Unsaved changes -- ask for confirmation
-				/* vex.dialog.confirm({
-					message: 'There are unsaved changes. Leave anyway?' + obj,
-					callback: result => resolve(result)
-				});*/
-			}
-		});
 	}
 	
 	_renderSettings(){
@@ -229,7 +178,6 @@ class Test extends Component {
 		
 		return (
 			<div className='test col-sm-5 col-md-4 col-lg-3'>
-				<ButtonPrimary text='Сохранить' onClick={this.handleSaveTest} />
 				<button type='button' onClick={() => this.props.changeTestTab('settings')}>Общие настройки</button>
 				<button type='button' onClick={() => this.props.changeTestTab('sections')}>Разделы</button>
 				{selectedTestTab === 'sections' && <ButtonPrimary text='Добавить раздел' onClick={this.handleAddNewSection} />}

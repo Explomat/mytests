@@ -5,6 +5,7 @@ import merge from 'lodash/merge';
 const remoteConstants = createRemoteActions([
 	'APP_GET_ACCESS',
 	'TESTS_SAVE_TEST',
+	'TESTS_RESET_TEST',
 	'TESTS_GET_TESTS',
 	'TESTS_GET_TESTS_ON_SCROLL',
 	'TESTS_GET_TEST',

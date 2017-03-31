@@ -84,12 +84,33 @@ export function saveTest(testId){
 		});
 		
 		setTimeout(() => {
-			const test = getState().test;
-			saveMockTest(testId, test);
-			dispatch(info('Тест сохранен.'));
+			const { test } = getState();
+			saveMockTest(testId, test.data);
+			window.location.href = '#';
+			/* dispatch(info('Тест сохранен.'));
 			dispatch({
 				type: constants.TESTS_SAVE_TEST_SUCCESS
+			});*/
+		}, 300);
+	};
+}
+
+export function resetTest(testId){
+	return (dispatch, getState) => {
+		dispatch({
+			type: constants.TESTS_RESET_TEST
+		});
+		
+		setTimeout(() => {
+			const { test } = getState();
+			saveMockTest(testId, test.defaultData);
+			dispatch({
+				type: constants.TESTS_RESET_TEST_SUCCESS
 			});
+			window.location.href = '#';
+			/* dispatch({
+				type: constants.TESTS_SAVE_TEST_SUCCESS
+			});*/
 		}, 300);
 	};
 }

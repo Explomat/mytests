@@ -452,7 +452,7 @@ export function getMockTest(testId){
 export function saveMockTest(testId, test){
 	const testIndex = findIndex(tests, t => t.id.toString() === testId.toString());
 	if (testIndex !== -1){
-		tests[testIndex] = test.data;
+		tests[testIndex] = test;
 	}
 }
 

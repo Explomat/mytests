@@ -23,6 +23,7 @@ export default function test(state = {
 		not_display_unfinished_score: {}, // Не показывать набранный балл для завершенных тестов,
 		sections: []
 	},
+	defaultData: {},
 	templates: {},
 	isFetching: true
 }, action) {
@@ -37,8 +38,17 @@ export default function test(state = {
 			return {
 				...state,
 				...action.response,
-				defaultState: data,
+				defaultData: data,
 				isFetching: false
+			};
+		}
+		
+		case constants.TESTS_RESET_TEST:
+		case constants.TESTS_RESET_TEST_SUCCESS: {
+			const { defaultData } = state;
+			return {
+				...state,
+				data: defaultData
 			};
 		}
 		

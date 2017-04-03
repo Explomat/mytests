@@ -49,7 +49,6 @@ class TestContainer extends Component {
 				return true;
 			}
 			this.setState({ displayConfirmed: true });
-			router.goForward();
 			return false;
 		});
 		// setAsyncRouteLeaveHook(this.props.router, this.props.route, this._locationHasChanged);
@@ -65,17 +64,16 @@ class TestContainer extends Component {
 			displayConfirmed: false,
 			hasConfirmed: val
 		});
-		if (val){
-			this._saveTest();
-		} else {
-			this._resetTest();
-		}
+		if (val) this._saveTest();
+		else this._resetTest();
 	}
 	
 	handleClose(){
+		const { router } = this.props;
 		this.setState({
 			displayConfirmed: false
 		});
+		router.goForward();
 	}
 	
 	_saveTest(){
